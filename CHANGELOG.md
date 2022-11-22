@@ -1,3 +1,10 @@
+# 1.0.0 (2022-11-22)
+
+
+### Features
+
+* initial commit ([c004fcf](https://github.com/bloc-state/react-bloc/commit/c004fcf08ed16203d00486b9a26475a65b194d57))
+
 # [2.0.0-beta.4](https://github.com/bloc-state/react-bloc/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2022-11-22)
 
 ### Bug Fixes
