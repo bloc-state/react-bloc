@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/bloc-state/react-bloc/compare/v1.0.1...v2.0.0) (2022-11-22)
+
+
+### Features
+
+* catch up to to 2.0.0 release on npm ([8fc35eb](https://github.com/bloc-state/react-bloc/commit/8fc35eb0d107c8166a549089109078e50646cb62))
+
+
+### BREAKING CHANGES
+
+* catch up to 2.0.0 release on npm
+
 # [2.0.0-beta.4](https://github.com/bloc-state/react-bloc/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2022-11-22)
 
 ### Bug Fixes
