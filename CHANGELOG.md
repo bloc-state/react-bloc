@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/bloc-state/react-bloc/compare/v1.0.0...v1.0.1) (2022-11-22)
+
+
+### Bug Fixes
+
+* **semantic-release:** npm publishing ([9bfd96c](https://github.com/bloc-state/react-bloc/commit/9bfd96c965712f4b231ee3e54e98392066284746))
+
 # [2.0.0-beta.4](https://github.com/bloc-state/react-bloc/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2022-11-22)
 
 ### Bug Fixes
