@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/bloc-state/react-bloc/compare/v2.1.0...v2.1.1) (2022-11-24)
+
+
+### Bug Fixes
+
+* **readme:** updated readme, bump to push changes to npm ([14b80a7](https://github.com/bloc-state/react-bloc/commit/14b80a7a5e91d9fbf1da1480c5b471ce2060705e))
+
 # [2.1.0](https://github.com/bloc-state/react-bloc/compare/v2.0.0...v2.1.0) (2022-11-24)
 
 
