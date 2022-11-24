@@ -3,7 +3,7 @@ import "reflect-metadata"
 import { cleanup, render, renderHook } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import { BlocProvider, useBlocInstance } from "../../src"
-import { clearBlocContext } from "../../src/provider/context"
+import { clearBlocContext } from "../../src/context/context"
 import {
   cubitCounterWrapper as ccw,
   blocUserWrapper as buw,
@@ -30,9 +30,9 @@ describe("useBlocInstance", () => {
     cleanup()
   })
 
-  afterAll( () => {
+  afterAll(() => {
     container.reset()
-  }) 
+  })
 
   it("should return an instance of a bloc created by a BlocProvider", () => {
     expect.assertions(1)

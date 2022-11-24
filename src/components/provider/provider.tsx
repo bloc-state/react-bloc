@@ -1,7 +1,6 @@
-import { BlocBase, ClassType } from "@bloc-state/bloc"
 import { useState, useEffect, Fragment } from "react"
-import { BlocProviderProps, BlocProviderState } from "../types"
-import { removeBlocContext } from "./context"
+import { BlocProviderProps, BlocProviderState, BlocResolver } from "../../types"
+import { removeBlocContext } from "../../context/context"
 import { getStateFromProps } from "./util"
 
 export function BlocProvider(
@@ -15,7 +14,7 @@ export function BlocProvider(
     setState(stateFromProps)
 
     if (props.onCreate) {
-      const getter = <B extends BlocBase<any>>(blocClass: ClassType<B>) => {
+      const getter: BlocResolver = (blocClass) => {
         return stateFromProps.container.resolve(blocClass)
       }
 

@@ -2,13 +2,15 @@ import { UserBloc } from ".."
 import { useBlocSelector } from "../../../../src"
 
 type UserBlocConsumerProps = {
-  swr?: boolean
+  swr?: boolean,
+  suspend?: boolean
 }
 
-export const UserBlocConsumer = ({ swr }: UserBlocConsumerProps) => {
+export const UserBlocConsumer = ({ swr, suspend }: UserBlocConsumerProps) => {
   const lastName = useBlocSelector(UserBloc, {
     selector: (state) => state.name.last,
-    swr: swr,
+    swr,
+    suspend
   })
 
   return (

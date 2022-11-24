@@ -2,7 +2,7 @@ import "reflect-metadata"
 import { cleanup, renderHook } from "@testing-library/react"
 import { cubitCounterWrapper as ccw } from "../test-helpers/wrappers"
 import { useSetBloc } from "../../src"
-import { clearBlocContext } from "../../src/provider/context"
+import { clearBlocContext } from "../../src/context/context"
 import CounterCubit from "../test-helpers/counter/counter.cubit"
 import { container } from "tsyringe"
 

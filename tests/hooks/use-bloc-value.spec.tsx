@@ -1,6 +1,6 @@
 import "reflect-metadata"
 import { cubitCounterWrapper as ccw } from "../test-helpers/wrappers"
-import { clearBlocContext } from "../../src/provider/context"
+import { clearBlocContext } from "../../src/context/context"
 import { cleanup, renderHook } from "@testing-library/react"
 import { useBlocValue } from "../../src"
 import CounterCubit from "../test-helpers/counter/counter.cubit"
@@ -14,9 +14,9 @@ describe("useBlocValue", () => {
     cubitCounterWrapper = ccw
   })
 
-  afterAll( () => {
+  afterAll(() => {
     container.reset()
-  }) 
+  })
 
   afterEach(() => {
     clearBlocContext()

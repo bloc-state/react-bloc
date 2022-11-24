@@ -6,7 +6,7 @@ import {
   addBlocContext,
   getBlocContext,
   removeBlocContext,
-} from "../../src/provider/context"
+} from "../../src/context/context"
 
 describe("BlocContextGlobalMap", () => {
   let blocContext: BlocContext
@@ -17,10 +17,9 @@ describe("BlocContextGlobalMap", () => {
     addBlocContext("test", blocContext)
   })
 
-  afterAll( () => {
+  afterAll(() => {
     container.reset()
   })
-
 
   it("should remove all context from the blocContextMap", () => {
     expect(getBlocContext("test")).toBeDefined()

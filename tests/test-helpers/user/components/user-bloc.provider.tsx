@@ -1,9 +1,56 @@
 import { Suspense } from "react"
 import { DependencyContainer } from "tsyringe"
-import { UserBloc, UserLastNameAsyncChangedEvent } from ".."
+import {
+  UserBloc,
+  UserBlocListenerEvent,
+  UserLastNameAsyncChangedEvent,
+  UserMultiBlocListenerEvent,
+} from ".."
 import { BlocProvider } from "../../../../src"
+import { BlocListener } from "../../../../src/components/bloc-listener/listener"
 import CounterCubit from "../../counter/counter.cubit"
 import { UserBlocConsumer } from "./user-bloc-consumer"
+
+export const UserMultiBlocListenerProvider = (container?: DependencyContainer) => (
+  <BlocProvider
+    bloc={[UserBloc, CounterCubit]}
+    name="user-multi-bloc-provider"
+    container={container}
+    onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent())}
+  >
+    <BlocListener
+      bloc={[UserBloc, CounterCubit]}
+      listen={(get, state) => {
+        const count = state as number
+        get(UserBloc).add(new UserMultiBlocListenerEvent(count))
+      }}
+      listenWhen={ ( get, state ) => {
+        return typeof state === "number"
+      }}
+    >
+      <UserBlocConsumer />
+      </BlocListener>
+  </BlocProvider>
+)
+
+export const UserSingleBlocListenerProvider = (
+  container?: DependencyContainer,
+) => (
+  <BlocProvider
+    bloc={UserBloc}
+    container={container}
+    onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent())}
+  >
+    <BlocListener
+      bloc={UserBloc}
+      listen={(get, state) => {
+        get(UserBloc).add(new UserBlocListenerEvent())
+      }}
+    >
+      <UserBlocConsumer swr={false} suspend={false} />
+    </BlocListener>
+  </BlocProvider>
+)
 
 export const UserBlocProvider = (
   container?: DependencyContainer,

@@ -7,7 +7,7 @@ import {
   cubitCounterWrapper as ccw,
   blocUserWrapper as buw,
 } from "../test-helpers/wrappers"
-import { clearBlocContext } from "../../src/provider/context"
+import { clearBlocContext } from "../../src/context/context"
 import { container } from "tsyringe"
 
 describe("useBloc", () => {
@@ -24,7 +24,7 @@ describe("useBloc", () => {
     cleanup()
   })
 
-  afterAll( () => {
+  afterAll(() => {
     container.reset()
   })
 
@@ -44,7 +44,7 @@ describe("useBloc", () => {
       () =>
         useBloc(UserBloc, {
           selector: (state) => state.name.first,
-          suspend: false
+          suspend: false,
         }),
       { wrapper: blocUserWrapper },
     )

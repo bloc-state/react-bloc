@@ -5,15 +5,12 @@ import {
   MultiBlocProviderProps,
   BlocProviderState,
   SingleBlocProviderProps,
-} from "../types"
-import { getBlocContext, addBlocContext } from "./context"
-
-export const hasProperty = <T extends object>(obj: T, prop: string) =>
-  Object.hasOwnProperty.call(obj, prop)
+} from "../../types"
+import { getBlocContext, addBlocContext } from "../../context/context"
 
 export const isMultiBlocProvider = (
   props: BlocProviderProps,
-): props is MultiBlocProviderProps => hasProperty(props, "name")
+): props is MultiBlocProviderProps => Array.isArray(props.bloc)
 
 export const getStateFromMultiBlocProviderProps = ({
   container,

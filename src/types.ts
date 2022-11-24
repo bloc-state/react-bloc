@@ -2,7 +2,7 @@ import { BlocBase, Bloc, Cubit, ClassType } from "@bloc-state/bloc"
 import { State } from "@bloc-state/state"
 import { Observable } from "rxjs"
 import { DependencyContainer } from "tsyringe"
-import { BlocContext } from "./provider/context"
+import { BlocContext } from "./context/context"
 
 export type StateType<T extends BlocBase<any>> = T extends Cubit<infer U>
   ? U
@@ -61,3 +61,22 @@ export type BlocProviderState = {
   container: DependencyContainer
   shouldDestroy: boolean
 }
+
+export type BlocResolver = <B extends BlocBase<any>>(blocClass: ClassType<B>) => B
+
+export type BlocListenerProps<S = any> = {
+  bloc: ClassType<BlocBase<S>> | [ClassType<BlocBase>, ...ClassType<BlocBase>[]],
+  listenWhen?: (resolver: BlocResolver, state: S) => boolean
+  listen: (resolver: BlocResolver, state: S) => void
+}
+
+export type MultiBlocListenerProps<S = any> = {
+  bloc: [ClassType<BlocBase>, ...ClassType<BlocBase>[]],
+  listenWhen?: (resolver: BlocResolver, state: S ) => boolean,
+  listen: (resolver: BlocResolver, state: S) => void
+}
+
+export const isMultiBlocListener = (
+  props: BlocListenerProps,
+): props is MultiBlocListenerProps => Array.isArray(props.bloc)
+

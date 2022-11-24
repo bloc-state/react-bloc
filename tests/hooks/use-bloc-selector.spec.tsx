@@ -1,9 +1,19 @@
 import "reflect-metadata"
-import { act, cleanup, render, renderHook, waitFor } from "@testing-library/react"
-import { clearBlocContext } from "../../src/provider/context"
+import {
+  act,
+  cleanup,
+  render,
+  renderHook,
+  waitFor,
+} from "@testing-library/react"
+import { clearBlocContext } from "../../src/context/context"
 import { container as rootContainer } from "tsyringe"
 import { useBlocSelector } from "../../src"
-import { UserBloc, UserBlocProvider, UserLastNameAsyncChangedEvent } from "../test-helpers"
+import {
+  UserBloc,
+  UserBlocProvider,
+  UserLastNameAsyncChangedEvent,
+} from "../test-helpers"
 import CounterCubit from "../test-helpers/counter/counter.cubit"
 import {
   blocUserWrapper as buw,
@@ -74,8 +84,8 @@ describe("useBlocSelector", () => {
 
     const userBloc = container.resolve(UserBloc)
 
-    act( () => {
-      userBloc.add(new UserLastNameAsyncChangedEvent)
+    act(() => {
+      userBloc.add(new UserLastNameAsyncChangedEvent())
     })
 
     await waitFor(() => {

@@ -1,7 +1,7 @@
 import "reflect-metadata"
 import { cleanup, render } from "@testing-library/react"
 import { UserBloc, UserMultiBlocProvider } from "../test-helpers"
-import { addBlocContext, clearBlocContext } from "../../src/provider/context"
+import { addBlocContext, clearBlocContext } from "../../src/context/context"
 import { createContext } from "react"
 import { container as parentContainer } from "tsyringe"
 

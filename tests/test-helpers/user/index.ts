@@ -24,6 +24,14 @@ export class UserNameChangedEvent extends UserEvent {
   }
 }
 
+export class UserBlocListenerEvent extends UserEvent {}
+
+export class UserMultiBlocListenerEvent extends UserEvent {
+  constructor ( public count: number ) {
+    super()
+  }
+}
+
 export class UserLastNameAsyncChangedEvent extends UserEvent {}
 
 export class UserAgeChangedEvent extends UserEvent {
@@ -43,6 +51,22 @@ export class UserBloc extends Bloc<UserEvent, UserState> implements Disposable {
       emit((state) =>
         state.ready((user) => {
           user.name.last = "parker"
+        }),
+      )
+    })
+
+    this.on(UserBlocListenerEvent, async (event, emit) => {
+      emit((state) =>
+        state.ready((user) => {
+          user.name.last = "bloc-listener"
+        }),
+      )
+    })
+
+    this.on(UserMultiBlocListenerEvent, async (event, emit) => {
+      emit((state) =>
+        state.ready((user) => {
+          user.name.last = `multi-bloc-listener-${event.count}`
         }),
       )
     })
