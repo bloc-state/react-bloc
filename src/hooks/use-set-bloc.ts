@@ -1,9 +1,5 @@
-import {
-  ClassType,
-  StateType,
-  EmitUpdaterCallback,
-  Cubit,
-} from "@bloc-state/bloc"
+import { ClassType, EmitUpdaterCallback, Cubit } from "@bloc-state/bloc"
+import { StateType } from "../types"
 import { useBlocInstance } from "./use-bloc-instance"
 
 export const useSetBloc = <B extends Cubit<any>>(
