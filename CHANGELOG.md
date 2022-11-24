@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/bloc-state/react-bloc/compare/v2.0.0...v2.1.0) (2022-11-24)
+
+
+### Features
+
+* **bloc-listener:** added BlocListener component ([b9d8bad](https://github.com/bloc-state/react-bloc/commit/b9d8bad52b08ab078dd503f4459a8d25ed606a59))
+
 # [2.0.0](https://github.com/bloc-state/react-bloc/compare/v1.0.1...v2.0.0) (2022-11-22)
 
 
