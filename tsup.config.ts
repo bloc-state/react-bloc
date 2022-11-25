@@ -6,5 +6,6 @@ export default defineConfig({
   minify: true,
   dts: true,
   clean: true,
+  keepNames: true,
   tsconfig: "tsconfig.build.json",
 })
