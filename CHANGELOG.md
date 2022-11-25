@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/bloc-state/react-bloc/compare/v2.1.1...v2.1.2) (2022-11-24)
+
+
+### Bug Fixes
+
+* **BlocListener:** fix imports for BlocListener ([8080c27](https://github.com/bloc-state/react-bloc/commit/8080c2726ec3fdb91e3bee30820fa1b20646f42b))
+
 ## [2.1.1](https://github.com/bloc-state/react-bloc/compare/v2.1.0...v2.1.1) (2022-11-24)
 
 
