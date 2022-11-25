@@ -20,7 +20,6 @@ export type UseBlocSelectorConfig<B extends BlocBase<any>, P> = {
   selector: (state: SelectorStateType<B>) => P
   listenWhen?: (state: StateType<B>) => boolean
   suspend?: boolean
-  swr?: boolean
 }
 
 export type BlocType<T extends BlocBase<any>> = T extends Bloc<infer E, infer S>
@@ -62,21 +61,22 @@ export type BlocProviderState = {
   shouldDestroy: boolean
 }
 
-export type BlocResolver = <B extends BlocBase<any>>(blocClass: ClassType<B>) => B
+export type BlocResolver = <B extends BlocBase<any>>(
+  blocClass: ClassType<B>,
+) => B
 
 export type BlocListenerProps<S = any> = {
-  bloc: ClassType<BlocBase<S>> | [ClassType<BlocBase>, ...ClassType<BlocBase>[]],
+  bloc: ClassType<BlocBase<S>> | [ClassType<BlocBase>, ...ClassType<BlocBase>[]]
   listenWhen?: (resolver: BlocResolver, state: S) => boolean
   listen: (resolver: BlocResolver, state: S) => void
 }
 
 export type MultiBlocListenerProps<S = any> = {
-  bloc: [ClassType<BlocBase>, ...ClassType<BlocBase>[]],
-  listenWhen?: (resolver: BlocResolver, state: S ) => boolean,
+  bloc: [ClassType<BlocBase>, ...ClassType<BlocBase>[]]
+  listenWhen?: (resolver: BlocResolver, state: S) => boolean
   listen: (resolver: BlocResolver, state: S) => void
 }
 
 export const isMultiBlocListener = (
   props: BlocListenerProps,
 ): props is MultiBlocListenerProps => Array.isArray(props.bloc)
-

@@ -27,12 +27,16 @@ export class UserNameChangedEvent extends UserEvent {
 export class UserBlocListenerEvent extends UserEvent {}
 
 export class UserMultiBlocListenerEvent extends UserEvent {
-  constructor ( public count: number ) {
+  constructor(public count: number) {
     super()
   }
 }
 
-export class UserLastNameAsyncChangedEvent extends UserEvent {}
+export class UserLastNameAsyncChangedEvent extends UserEvent {
+  constructor(public name: string) {
+    super()
+  }
+}
 
 export class UserAgeChangedEvent extends UserEvent {
   constructor(public age: number) {
@@ -76,7 +80,7 @@ export class UserBloc extends Bloc<UserEvent, UserState> implements Disposable {
       await delay(1000)
       emit((state) =>
         state.ready((user) => {
-          user.name.last = "richards"
+          user.name.last = event.name
         }),
       )
     })

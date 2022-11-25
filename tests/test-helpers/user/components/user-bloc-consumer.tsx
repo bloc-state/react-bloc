@@ -9,7 +9,6 @@ type UserBlocConsumerProps = {
 export const UserBlocConsumer = ({ swr, suspend }: UserBlocConsumerProps) => {
   const lastName = useBlocSelector(UserBloc, {
     selector: (state) => state.name.last,
-    swr,
     suspend
   })
 

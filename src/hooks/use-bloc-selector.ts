@@ -1,10 +1,13 @@
 import { BlocBase, ClassType } from "@bloc-state/bloc"
 import { State, isStateInstance } from "@bloc-state/state"
-import { useForceUpdate, useObservableEagerState } from "observable-hooks"
-import { useEffect, useMemo } from "react"
+import {
+  ObservableResource,
+  useObservableEagerState,
+  useObservableSuspense,
+} from "observable-hooks"
+import { useMemo } from "react"
 import { filter, map, Observable } from "rxjs"
 import { SelectorStateType, UseBlocSelectorConfig } from "../types"
-import { StateResource } from "./state-resource"
 import { useBlocInstance } from "./use-bloc-instance"
 
 export function useBlocSelector<P, B extends BlocBase<any>>(
@@ -42,8 +45,7 @@ export function useBlocSelector<P, B extends BlocBase<any>>(
   if (suspend && isState) {
     return useStateSuspense(listenWhenState$, config)
   } else {
-    const state = useObservableEagerState(selectedState$)
-    return state
+    return useObservableEagerState(selectedState$)
   }
 }
 
@@ -52,19 +54,15 @@ function useStateSuspense<P, B extends BlocBase<any>>(
   config: UseBlocSelectorConfig<B, P>,
 ) {
   const selector = config.selector
-  const swr = config.swr ?? false
-  const updater = useForceUpdate()
 
   const resource = useMemo(() => {
-    return new StateResource(state$, updater, swr)
+    return new ObservableResource(
+      state$,
+      (state: State<any>) => state.status !== "loading",
+    )
   }, [])
 
-  useEffect(() => {
-    return () => {
-      resource.close()
-    }
-  }, [])
+  const state = useObservableSuspense(resource)
 
-  const state = resource.read() as State
   return selector(state.data)
 }

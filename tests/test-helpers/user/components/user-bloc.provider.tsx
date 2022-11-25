@@ -16,7 +16,7 @@ export const UserMultiBlocListenerProvider = (container?: DependencyContainer) =
     bloc={[UserBloc, CounterCubit]}
     name="user-multi-bloc-provider"
     container={container}
-    onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent())}
+    onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent("richards"))}
   >
     <BlocListener
       bloc={[UserBloc, CounterCubit]}
@@ -39,7 +39,7 @@ export const UserSingleBlocListenerProvider = (
   <BlocProvider
     bloc={UserBloc}
     container={container}
-    onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent())}
+    onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent("richards"))}
   >
     <BlocListener
       bloc={UserBloc}
@@ -59,7 +59,7 @@ export const UserBlocProvider = (
   <BlocProvider
     bloc={UserBloc}
     container={container}
-    onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent())}
+    onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent("richards"))}
   >
     <Suspense fallback={<div data-testid="test-loading">loading</div>}>
       <UserBlocConsumer swr={swr} />
@@ -72,7 +72,7 @@ export const UserMultiBlocProvider = (container?: DependencyContainer) => (
     bloc={[UserBloc, CounterCubit]}
     name="user-multi-bloc-provider"
     container={container}
-    onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent())}
+    onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent("richards"))}
   >
     <Suspense fallback={<div data-testid="test-loading">loading</div>}>
       <UserBlocConsumer />

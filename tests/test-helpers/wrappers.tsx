@@ -26,7 +26,7 @@ export const blocSuspendableUserWrapper = ({ children }: any) => (
   <BlocProvider
     bloc={UserBloc}
     onCreate={(get) => {
-      get(UserBloc).add(new UserLastNameAsyncChangedEvent())
+      get(UserBloc).add(new UserLastNameAsyncChangedEvent("richards"))
     }}
   >
     {children}
