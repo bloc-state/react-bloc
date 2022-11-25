@@ -15,17 +15,20 @@ export const isMultiBlocProvider = (
 export const getStateFromMultiBlocProviderProps = ({
   container,
   bloc,
-  name,
 }: MultiBlocProviderProps): BlocProviderState => {
   const providerContainer = container ?? rootContainer.createChildContainer()
   const shouldDestroy = !container // only destroy if the container is created by the provider
+  const names = bloc
+    .map((blocClass) => blocClass.name)
+    .sort()
+    .join("-")
 
-  let blocContext = getBlocContext(name)
+  let blocContext = getBlocContext(names)
 
   if (!blocContext) {
     blocContext = createContext(providerContainer)
-    blocContext.displayName = name
-    addBlocContext(name, blocContext)
+    blocContext.displayName = names
+    addBlocContext(names, blocContext)
   }
 
   for (let b of bloc) {

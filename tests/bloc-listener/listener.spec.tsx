@@ -17,7 +17,6 @@ describe("BlocListener", () => {
 
   it("should listenTo states when single bloc listener", () => {
 
-
     const  {getByText} = render(UserSingleBlocListenerProvider())
 
     waitFor( () => {

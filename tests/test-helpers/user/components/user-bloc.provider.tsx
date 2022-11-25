@@ -14,7 +14,6 @@ import { UserBlocConsumer } from "./user-bloc-consumer"
 export const UserMultiBlocListenerProvider = (container?: DependencyContainer) => (
   <BlocProvider
     bloc={[UserBloc, CounterCubit]}
-    name="user-multi-bloc-provider"
     container={container}
     onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent("richards"))}
   >
@@ -70,7 +69,6 @@ export const UserBlocProvider = (
 export const UserMultiBlocProvider = (container?: DependencyContainer) => (
   <BlocProvider
     bloc={[UserBloc, CounterCubit]}
-    name="user-multi-bloc-provider"
     container={container}
     onCreate={(get) => get(UserBloc).add(new UserLastNameAsyncChangedEvent("richards"))}
   >

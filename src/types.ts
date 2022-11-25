@@ -48,7 +48,6 @@ export type SingleBlocProviderProps = {
 
 export type MultiBlocProviderProps = {
   bloc: [ClassType<BlocBase>, ...ClassType<BlocBase>[]]
-  name: string // if bloc is an array of blocs, a name is required for a provider context
   onCreate?: OnCreate
   container?: DependencyContainer
 }

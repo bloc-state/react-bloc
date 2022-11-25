@@ -56,7 +56,7 @@ describe("useBlocInstance", () => {
   it("should throw an error if a bloc does not exist in multi bloc provider", () => {
     expect.assertions(1)
     const multiBlocProvider = ({ children }: any) => (
-      <BlocProvider bloc={[UserBloc, CounterCubit]} name="multi">
+      <BlocProvider bloc={[UserBloc, CounterCubit]}>
         {children}
       </BlocProvider>
     )
