@@ -1,3 +1,10 @@
+# [3.0.0-beta.2](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.1...v3.0.0-beta.2) (2022-11-25)
+
+
+### Bug Fixes
+
+* **bloc-listener:** use useLayoutEffect instead of useEffect ([b0c47ba](https://github.com/bloc-state/react-bloc/commit/b0c47bac1646837e8041d3c6b70dc8b765e36db0))
+
 # [3.0.0-beta.1](https://github.com/bloc-state/react-bloc/compare/v2.1.1...v3.0.0-beta.1) (2022-11-25)
 
 
