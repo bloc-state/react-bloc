@@ -1,3 +1,17 @@
+# [3.0.0-beta.1](https://github.com/bloc-state/react-bloc/compare/v2.1.1...v3.0.0-beta.1) (2022-11-25)
+
+
+### Bug Fixes
+
+* **BlocListener:** fix imports for BlocListener ([8080c27](https://github.com/bloc-state/react-bloc/commit/8080c2726ec3fdb91e3bee30820fa1b20646f42b))
+* **state-resource:** removed state resource feature ([b2c9f16](https://github.com/bloc-state/react-bloc/commit/b2c9f16983b89bfab4dc70d8f638048f3864d190))
+
+
+### BREAKING CHANGES
+
+* **state-resource:** removing StateResource in favor of ObservableResource
+from observable-hooks library
+
 ## [2.1.1](https://github.com/bloc-state/react-bloc/compare/v2.1.0...v2.1.1) (2022-11-24)
 
 
