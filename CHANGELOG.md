@@ -1,3 +1,10 @@
+# [3.0.0-beta.3](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.2...v3.0.0-beta.3) (2022-11-26)
+
+
+### Features
+
+* **context:** expose context containers in blocContext ([b588824](https://github.com/bloc-state/react-bloc/commit/b588824a974fd91f2adce5380371d017622fd74b))
+
 # [3.0.0-beta.2](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.1...v3.0.0-beta.2) (2022-11-25)
 
 
