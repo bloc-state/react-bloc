@@ -1,7 +1,7 @@
 import { BlocBase, ClassType } from "@bloc-state/bloc"
 import { useObservableEagerState } from "observable-hooks"
-import { useCallback, useContext, useLayoutEffect, useMemo } from "react"
-import { filter, mergeWith } from "rxjs"
+import { useLayoutEffect } from "react"
+import { filter, mergeWith, Observable } from "rxjs"
 import { getBlocContext } from "../../context"
 import { useBlocInstance } from "../../hooks"
 import {
@@ -17,29 +17,26 @@ export function BlocListener<State = any>(
   const listenWhen = props.listenWhen ?? (() => true)
 
   if (isMultiBlocListener(_props)) {
-    const names = useMemo(() => {
-      return _props.bloc
-        .map((bloc) => bloc.name)
-        .sort()
-        .join("-")
-    }, [])
+    const states$: Observable<any>[] = []
 
-    const state$ = _props.bloc.map((bloc) => useBlocInstance(bloc).state$)
-    const context = getBlocContext(names)
+    _props.bloc.forEach((blocClass) => {
+      const instance = useBlocInstance(blocClass)
+      states$.push(instance.state$)
+    })
 
-    if (!context) {
-      throw new Error(
-        `BlocListener: multibloc listener could not find context "${names}"`,
-      )
+    const get: BlocResolver = (blocClass) => {
+      const blocContext = getBlocContext(blocClass.name)
+
+      if (!blocContext) {
+        throw new Error(
+          `BlocListener: bloc listener could not find context "${blocClass.name}"`,
+        )
+      }
+
+      return blocContext.container.resolve(blocClass)
     }
 
-    const container = useContext(context)
-
-    const get: BlocResolver = useCallback((blocClass) => {
-      return container.resolve(blocClass)
-    }, [])
-
-    const mergedStream$ = state$
+    const mergedStream$ = states$
       .reduce((a, b) => a.pipe(mergeWith(b)))
       .pipe(filter((state) => listenWhen(get, state)))
 
@@ -51,19 +48,24 @@ export function BlocListener<State = any>(
   } else {
     const bloc = props.bloc as ClassType<BlocBase<State>>
 
-    const context = getBlocContext(bloc.name)
+    const blocContext = getBlocContext(bloc.name)
 
-    if (!context) {
+    if (!blocContext) {
       throw new Error(
         `BlocListener: bloc listener could not find context "${bloc.name}"`,
       )
     }
 
-    const container = useContext(context)
+    const get: BlocResolver = (blocClass) => {
+      const blocContext = getBlocContext(blocClass.name)
+      if (!blocContext) {
+        throw new Error(
+          `BlocListener.listener(get): bloc listener could not find context "${blocClass.name}"`,
+        )
+      }
 
-    const get: BlocResolver = useCallback((blocClass) => {
-      return container.resolve(blocClass)
-    }, [])
+      return blocContext.container.resolve(blocClass)
+    }
 
     const state$ = useBlocInstance(bloc).state$.pipe(
       filter((state) => listenWhen(get, state)),

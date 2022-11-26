@@ -1,7 +1,10 @@
 import { Context } from "react"
 import { DependencyContainer } from "tsyringe"
 
-export type BlocContext = Context<DependencyContainer>
+export type BlocContext = {
+  context: Context<DependencyContainer>
+  container: DependencyContainer
+}
 
 const blocContextMap = new Map<string, BlocContext>()
 

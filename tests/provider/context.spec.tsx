@@ -12,8 +12,12 @@ describe("BlocContextGlobalMap", () => {
   let blocContext: BlocContext
 
   beforeEach(() => {
-    blocContext = createContext(container)
-    blocContext.displayName = "test"
+    const context = createContext(container)
+    context.displayName = "test"
+    blocContext = {
+      context,
+      container: container
+    }
     addBlocContext("test", blocContext)
   })
 

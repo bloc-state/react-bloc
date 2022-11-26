@@ -22,7 +22,10 @@ describe("BlocProvider", () => {
   it("should throw an error if a provided bloc already exists in contextMap", async () => {
     const blocContext = createContext(parentContainer)
     blocContext.displayName = UserBloc.name
-    addBlocContext(UserBloc.name, blocContext)
+    addBlocContext( UserBloc.name, {
+      context: blocContext,
+      container: parentContainer
+    })
 
     expect(() => {
       render(UserMultiBlocProvider())

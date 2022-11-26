@@ -5,15 +5,15 @@ import { getBlocContext } from "../context/context"
 export const useBlocInstance = <B extends BlocBase<any>>(
   bloc: ClassType<B>,
 ): B => {
-  const context = getBlocContext(bloc.name)
+  const blocContext = getBlocContext(bloc.name)
 
-  if (!context) {
+  if (!blocContext) {
     throw new Error(
       `Context does not exist for ${bloc.name} in the current provider`,
     )
   }
 
-  const blocInstance = useContext(context).resolve(bloc)
+  const blocInstance = useContext(blocContext.context).resolve(bloc)
 
   return blocInstance
 }

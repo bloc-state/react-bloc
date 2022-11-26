@@ -26,8 +26,11 @@ export const getStateFromMultiBlocProviderProps = ({
   let blocContext = getBlocContext(names)
 
   if (!blocContext) {
-    blocContext = createContext(providerContainer)
-    blocContext.displayName = names
+    blocContext = {
+      context: createContext(providerContainer),
+      container: providerContainer,
+    }
+    blocContext.context.displayName = names
     addBlocContext(names, blocContext)
   }
 
@@ -62,8 +65,11 @@ export const getStateFromSingleBlocProviderProps = function ({
   let blocContext = getBlocContext(name)
 
   if (!blocContext) {
-    blocContext = createContext(providerContainer)
-    blocContext.displayName = name
+    blocContext = {
+      context: createContext(providerContainer),
+      container: providerContainer,
+    }
+    blocContext.context.displayName = name
     providerContainer.register(
       bloc,
       { useClass: bloc },

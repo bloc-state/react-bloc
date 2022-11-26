@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from "react"
 import { BlocProviderProps, BlocProviderState, BlocResolver } from "../../types"
-import { removeBlocContext } from "../../context/context"
+import { getBlocContext, removeBlocContext } from "../../context/context"
 import { getStateFromProps } from "./util"
 
 export function BlocProvider(
@@ -15,7 +15,13 @@ export function BlocProvider(
 
     if (props.onCreate) {
       const getter: BlocResolver = (blocClass) => {
-        return stateFromProps.container.resolve(blocClass)
+        const context = getBlocContext(blocClass.name)
+        if ( !context ) {
+          throw new Error(
+            `BlocProvider: BlocProvider could not find context "${blocClass.name}"`,
+          )
+        }
+        return context.container.resolve(blocClass)
       }
 
       props.onCreate(getter)
@@ -29,11 +35,12 @@ export function BlocProvider(
     }
   }, [])
 
+
   if (state) {
     return (
-      <state.blocContext.Provider value={state.container}>
+      <state.blocContext.context.Provider value={state.container}>
         {props.children}
-      </state.blocContext.Provider>
+      </state.blocContext.context.Provider>
     )
   }
 
