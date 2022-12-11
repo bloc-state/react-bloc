@@ -4,22 +4,21 @@ import { cubitCounterWrapper as ccw } from "../test-helpers/wrappers"
 import { useSetBloc } from "../../src"
 import { clearBlocContext } from "../../src/context/context"
 import CounterCubit from "../test-helpers/counter/counter.cubit"
-import { container } from "tsyringe"
+import { AwilixContainer, createContainer } from "awilix"
 
 describe("useSetBloc", () => {
   let cubitCounterWrapper: ({ children }: any) => JSX.Element
+  let container: AwilixContainer
 
   beforeEach(() => {
     cubitCounterWrapper = ccw
-  })
-
-  afterAll(() => {
-    container.reset()
+    container = createContainer()
   })
 
   afterEach(() => {
     clearBlocContext()
     cleanup()
+    container.dispose()
   })
 
   it("should return the emit method of a bloc", () => {

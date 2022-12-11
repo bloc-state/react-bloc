@@ -1,7 +1,7 @@
 import { BlocBase, Bloc, Cubit, ClassType } from "@bloc-state/bloc"
 import { State } from "@bloc-state/state"
+import { AwilixContainer } from "awilix"
 import { Observable } from "rxjs"
-import { DependencyContainer } from "tsyringe"
 import { BlocContext } from "./context/context"
 
 export type StateType<T extends BlocBase<any>> = T extends Cubit<infer U>
@@ -16,9 +16,16 @@ export type SelectorStateType<B extends BlocBase<any>> = SuspenseDataType<
   StateType<B>
 >
 
+export type BlocModule = (container: AwilixContainer) => void
+
+export type UseBlocConfig = {
+  scope?: string
+}
+
 export type UseBlocSelectorConfig<B extends BlocBase<any>, P> = {
   selector: (state: SelectorStateType<B>) => P
   listenWhen?: (state: StateType<B>) => boolean
+  suspendWhen?: (state: StateType<B>) => boolean
   suspend?: boolean
 }
 
@@ -37,45 +44,39 @@ export type StreamType<T extends Observable<any>> = T extends Observable<
 export type ProvidedBlocType = BlocBase<any> | BlocBase<any>[]
 
 export type OnCreate = (
-  get: <B extends BlocBase<any>>(blocClass: ClassType<B>) => B,
+  get: <B extends BlocBase<any>>(blocClass: ClassType<B>, scope?: string) => B,
 ) => void
 
-export type SingleBlocProviderProps = {
-  bloc: ClassType<BlocBase>
-  onCreate?: OnCreate
-  container?: DependencyContainer
-}
-
-export type MultiBlocProviderProps = {
+export type BlocProviderProps = {
   bloc: [ClassType<BlocBase>, ...ClassType<BlocBase>[]]
+  scope?: string
   onCreate?: OnCreate
-  container?: DependencyContainer
+  container?: AwilixContainer
 }
-
-export type BlocProviderProps = SingleBlocProviderProps | MultiBlocProviderProps
 
 export type BlocProviderState = {
   blocContext: BlocContext
-  container: DependencyContainer
+  container: AwilixContainer
   shouldDestroy: boolean
 }
 
 export type BlocResolver = <B extends BlocBase<any>>(
   blocClass: ClassType<B>,
+  scope?: string,
 ) => B
 
-export type BlocListenerProps<S = any> = {
-  bloc: ClassType<BlocBase<S>> | [ClassType<BlocBase>, ...ClassType<BlocBase>[]]
-  listenWhen?: (resolver: BlocResolver, state: S) => boolean
-  listen: (resolver: BlocResolver, state: S) => void
+// listener and listenWhen methods will not infer their argument types correctly unless they are both optional for some reason
+export type BlocListenerProps<B extends BlocBase<any>> = {
+  bloc: ClassType<B>
+  scope?: string
+  listener?: (resolver: BlocResolver, state: StateType<B>) => void
+  listenWhen?: (previous: StateType<B>, current: StateType<B>) => boolean
 }
 
-export type MultiBlocListenerProps<S = any> = {
-  bloc: [ClassType<BlocBase>, ...ClassType<BlocBase>[]]
-  listenWhen?: (resolver: BlocResolver, state: S) => boolean
-  listen: (resolver: BlocResolver, state: S) => void
+export type MultiBlocListenerProps<B extends BlocBase<any>> = {
+  listeners: BlocListenerProps<B>[]
 }
 
-export const isMultiBlocListener = (
-  props: BlocListenerProps,
-): props is MultiBlocListenerProps => Array.isArray(props.bloc)
+export const isMultiBlocListener = <B extends BlocBase<any>>(
+  props: any,
+): props is MultiBlocListenerProps<B> => props.listeners != null

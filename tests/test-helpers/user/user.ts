@@ -1,7 +1,6 @@
 import { BlocEvent, Bloc } from "@bloc-state/bloc"
 import { State } from "@bloc-state/state"
 
-import { Disposable } from "tsyringe"
 import { delay } from "../counter/delay"
 
 export interface User {
@@ -44,7 +43,7 @@ export class UserAgeChangedEvent extends UserEvent {
   }
 }
 
-export class UserBloc extends Bloc<UserEvent, UserState> implements Disposable {
+export class UserBloc extends Bloc<UserEvent, UserState> {
   constructor() {
     const initialData = { name: { first: "", last: "" }, age: 0 }
 

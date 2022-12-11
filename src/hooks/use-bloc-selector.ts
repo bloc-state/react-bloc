@@ -1,5 +1,5 @@
 import { BlocBase, ClassType } from "@bloc-state/bloc"
-import { State, isStateInstance } from "@bloc-state/state"
+import { isStateInstance } from "@bloc-state/state"
 import {
   ObservableResource,
   useObservableEagerState,
@@ -7,7 +7,7 @@ import {
 } from "observable-hooks"
 import { useMemo } from "react"
 import { filter, map, Observable } from "rxjs"
-import { SelectorStateType, UseBlocSelectorConfig } from "../types"
+import { SelectorStateType, StateType, UseBlocSelectorConfig } from "../types"
 import { useBlocInstance } from "./use-bloc-instance"
 
 export function useBlocSelector<P, B extends BlocBase<any>>(
@@ -17,7 +17,7 @@ export function useBlocSelector<P, B extends BlocBase<any>>(
   const providedBloc = useBlocInstance(bloc)
   const isState = isStateInstance(providedBloc.state)
   const selector = config.selector
-  const suspend = config.suspend ?? true
+  const suspend = config.suspend ?? false
   const listenWhen = config.listenWhen ?? (() => true)
 
   const listenWhenState$ = useMemo(() => {
@@ -42,27 +42,27 @@ export function useBlocSelector<P, B extends BlocBase<any>>(
         )
       }, [])
 
-  if (suspend && isState) {
-    return useStateSuspense(listenWhenState$, config)
+  if (suspend) {
+    return useBlocSuspense(listenWhenState$, config)
   } else {
     return useObservableEagerState(selectedState$)
   }
 }
 
-function useStateSuspense<P, B extends BlocBase<any>>(
-  state$: Observable<State>,
+function useBlocSuspense<P, B extends BlocBase<any>>(
+  state$: Observable<any>,
   config: UseBlocSelectorConfig<B, P>,
 ) {
   const selector = config.selector
+  const suspendWhen =
+    config.suspendWhen ??
+    ((state) => (isStateInstance(state) ? state.status !== "loading" : true))
 
   const resource = useMemo(() => {
-    return new ObservableResource(
-      state$,
-      (state: State<any>) => state.status !== "loading",
-    )
+    return new ObservableResource(state$, (value) => suspendWhen(value))
   }, [])
 
-  const state = useObservableSuspense(resource)
+  const state = useObservableSuspense(resource) as StateType<B>
 
-  return selector(state.data)
+  return selector(isStateInstance(state) ? state.data : state)
 }

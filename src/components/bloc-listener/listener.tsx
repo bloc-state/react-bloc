@@ -1,81 +1,56 @@
-import { BlocBase, ClassType } from "@bloc-state/bloc"
-import { useObservableEagerState } from "observable-hooks"
-import { useLayoutEffect } from "react"
-import { filter, mergeWith, Observable } from "rxjs"
+import { BlocBase } from "@bloc-state/bloc"
+import {
+  useLayoutSubscription,
+} from "observable-hooks"
+import { filter, map, pairwise } from "rxjs"
 import { getBlocContext } from "../../context"
 import { useBlocInstance } from "../../hooks"
 import {
   BlocListenerProps,
   BlocResolver,
   isMultiBlocListener,
+  MultiBlocListenerProps,
 } from "../../types"
 
-export function BlocListener<State = any>(
-  props: React.PropsWithChildren<BlocListenerProps<State>>,
-) {
-  const _props = props as BlocListenerProps<State>
-  const listenWhen = props.listenWhen ?? (() => true)
+export const get: BlocResolver = (blocClass, scope) => {
+  const name = scope ? `${scope}-${blocClass.name}` : blocClass.name
 
-  if (isMultiBlocListener(_props)) {
-    const states$: Observable<any>[] = []
+  const blocContext = getBlocContext(name)
 
-    _props.bloc.forEach((blocClass) => {
-      const instance = useBlocInstance(blocClass)
-      states$.push(instance.state$)
-    })
-
-    const get: BlocResolver = (blocClass) => {
-      const blocContext = getBlocContext(blocClass.name)
-
-      if (!blocContext) {
-        throw new Error(
-          `BlocListener: bloc listener could not find context "${blocClass.name}"`,
-        )
-      }
-
-      return blocContext.container.resolve(blocClass)
-    }
-
-    const mergedStream$ = states$
-      .reduce((a, b) => a.pipe(mergeWith(b)))
-      .pipe(filter((state) => listenWhen(get, state)))
-
-    const state = useObservableEagerState(mergedStream$)
-
-    useLayoutEffect(() => {
-      props.listen(get, state)
-    }, [state])
-  } else {
-    const bloc = props.bloc as ClassType<BlocBase<State>>
-
-    const blocContext = getBlocContext(bloc.name)
-
-    if (!blocContext) {
-      throw new Error(
-        `BlocListener: bloc listener could not find context "${bloc.name}"`,
-      )
-    }
-
-    const get: BlocResolver = (blocClass) => {
-      const blocContext = getBlocContext(blocClass.name)
-      if (!blocContext) {
-        throw new Error(
-          `BlocListener.listener(get): bloc listener could not find context "${blocClass.name}"`,
-        )
-      }
-
-      return blocContext.container.resolve(blocClass)
-    }
-
-    const state$ = useBlocInstance(bloc).state$.pipe(
-      filter((state) => listenWhen(get, state)),
+  if (!blocContext) {
+    throw new Error(
+      `BlocListener: bloc listener could not find context "${blocClass.name}"`,
     )
+  }
 
-    const state = useObservableEagerState(state$)
+  return blocContext.container.resolve(name)
+}
 
-    useLayoutEffect(() => {
-      props.listen(get, state)
-    }, [state])
+export function subscribeToListener <B extends BlocBase<any>>(listener: BlocListenerProps<B>) {
+  const bloc = useBlocInstance(listener.bloc, listener.scope)
+  const blocListener = listener.listener ?? ( () => {})
+  const listenWhen = listener.listenWhen ?? (() => true)
+  const state$ = bloc.state$.pipe(
+    pairwise(),
+    filter( ( [ previous, current ] ) => {
+      return listenWhen(previous, current)
+    } ),
+    map(([_, current]) => current)
+  )
+
+  useLayoutSubscription(state$, (next) => {
+    blocListener(get, next)
+  })
+}
+
+export function BlocListener<B extends BlocBase<any>>(
+  props: React.PropsWithChildren<BlocListenerProps<B> | MultiBlocListenerProps<B>>,
+) {
+
+  if (isMultiBlocListener(props)) {
+     props.listeners.forEach(subscribeToListener)
+  } else {
+    subscribeToListener(props)
   }
 
   return <>{props.children}</>

@@ -1,20 +1,19 @@
+import { AwilixContainer } from "awilix"
 import { Context } from "react"
-import { DependencyContainer } from "tsyringe"
 
 export type BlocContext = {
-  context: Context<DependencyContainer>
-  container: DependencyContainer
+  context: Context<AwilixContainer>
+  container: AwilixContainer
 }
 
 const blocContextMap = new Map<string, BlocContext>()
 
-export const getBlocContext = (scope: string) => {
-  return blocContextMap.get(scope)
-}
+export const hasBlocContext = (scope: string) => blocContextMap.has(scope)
 
-export const addBlocContext = (scope: string, context: BlocContext) => {
-  return blocContextMap.set(scope, context)
-}
+export const getBlocContext = (scope: string) => blocContextMap.get(scope)
+
+export const addBlocContext = (scope: string, context: BlocContext) =>
+  blocContextMap.set(scope, context)
 
 export const removeBlocContext = (context: BlocContext) => {
   for (const [key, val] of blocContextMap.entries()) {
@@ -24,6 +23,4 @@ export const removeBlocContext = (context: BlocContext) => {
   }
 }
 
-export const clearBlocContext = () => {
-  return blocContextMap.clear()
-}
+export const clearBlocContext = () => blocContextMap.clear()

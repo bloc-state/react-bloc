@@ -9,19 +9,21 @@ import {
   blocUserWrapper as buw,
 } from "../test-helpers/wrappers"
 import CounterCubit from "../test-helpers/counter/counter.cubit"
-import { UserBloc } from "../test-helpers/user"
+import { UserBloc } from "../test-helpers/user/user"
 import { CounterBlocConsumer } from "../test-helpers/counter/components/counter-cubit-consumer"
-import { container } from "tsyringe"
+import { AwilixContainer, createContainer } from "awilix"
 
 describe("useBlocInstance", () => {
   let cubitCounterWrapper: ({ children }: any) => JSX.Element
   let blocUserWrapper: ({ children }: any) => JSX.Element
+  let container: AwilixContainer
   const originalConsoleError = console.error
 
   beforeEach(() => {
     console.error = () => {}
     cubitCounterWrapper = ccw
     blocUserWrapper = buw
+    container = createContainer()
   })
 
   afterEach(() => {
@@ -31,7 +33,7 @@ describe("useBlocInstance", () => {
   })
 
   afterAll(() => {
-    container.reset()
+    container.dispose()
   })
 
   it("should return an instance of a bloc created by a BlocProvider", () => {
@@ -56,9 +58,7 @@ describe("useBlocInstance", () => {
   it("should throw an error if a bloc does not exist in multi bloc provider", () => {
     expect.assertions(1)
     const multiBlocProvider = ({ children }: any) => (
-      <BlocProvider bloc={[UserBloc, CounterCubit]}>
-        {children}
-      </BlocProvider>
+      <BlocProvider bloc={[UserBloc, CounterCubit]}>{children}</BlocProvider>
     )
 
     const resultTest = () => {

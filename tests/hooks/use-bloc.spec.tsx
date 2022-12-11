@@ -2,21 +2,23 @@ import "reflect-metadata"
 import { renderHook, act, cleanup } from "@testing-library/react"
 import { useBloc } from "../../src"
 import CounterCubit from "../test-helpers/counter/counter.cubit"
-import { UserBloc, UserNameChangedEvent } from "../test-helpers/user"
+import { UserBloc, UserNameChangedEvent } from "../test-helpers/user/user"
 import {
   cubitCounterWrapper as ccw,
   blocUserWrapper as buw,
 } from "../test-helpers/wrappers"
 import { clearBlocContext } from "../../src/context/context"
-import { container } from "tsyringe"
+import { AwilixContainer, createContainer } from "awilix"
 
 describe("useBloc", () => {
   let cubitCounterWrapper: ({ children }: any) => JSX.Element
   let blocUserWrapper: ({ children }: any) => JSX.Element
+  let container: AwilixContainer
 
   beforeEach(() => {
     cubitCounterWrapper = ccw
     blocUserWrapper = buw
+    container = createContainer()
   })
 
   afterEach(() => {
@@ -25,7 +27,7 @@ describe("useBloc", () => {
   })
 
   afterAll(() => {
-    container.reset()
+    container.dispose()
   })
 
   it("should return tuple of current state and bloc", () => {
