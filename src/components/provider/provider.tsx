@@ -1,4 +1,4 @@
-import { useState, Fragment, createContext, useLayoutEffect } from "react"
+import { useState, Fragment, createContext, useEffect } from "react"
 import {
   BlocModule,
   BlocProviderProps,
@@ -27,7 +27,7 @@ export function BlocProvider(
 ) {
   const [state, setState] = useState<BlocProviderState | null>(null)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const stateFromProps = getStateFromProps(props)
 
     setState(stateFromProps)
