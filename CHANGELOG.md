@@ -1,3 +1,10 @@
+# [3.0.0-beta.4](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.3...v3.0.0-beta.4) (2022-12-11)
+
+
+### Features
+
+* switched to Awilix from Tsyringe for IoC ([51fd480](https://github.com/bloc-state/react-bloc/commit/51fd480e9fc28fa82683dfeece7852a77ca32589))
+
 # [3.0.0-beta.3](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.2...v3.0.0-beta.3) (2022-11-26)
 
 
