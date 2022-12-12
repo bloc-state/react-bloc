@@ -65,18 +65,15 @@ export type BlocResolver = <B extends BlocBase<any>>(
   scope?: string,
 ) => B
 
-// listener and listenWhen methods will not infer their argument types correctly unless they are both optional for some reason
-export type BlocListenerProps<B extends BlocBase<any>> = {
+export interface BlocListenerProps<B extends BlocBase<any>> {
   bloc: ClassType<B>
   scope?: string
-  listener?: (resolver: BlocResolver, state: StateType<B>) => void
-  listenWhen?: (previous: StateType<B>, current: StateType<B>) => boolean
+  listener: (
+    resolver: BlocResolver,
+    state: StateType<InstanceType<this["bloc"]>>,
+  ) => void
+  listenWhen?: (
+    previous: StateType<InstanceType<this["bloc"]>>,
+    current: StateType<InstanceType<this["bloc"]>>,
+  ) => boolean
 }
-
-export type MultiBlocListenerProps<B extends BlocBase<any>> = {
-  listeners: BlocListenerProps<B>[]
-}
-
-export const isMultiBlocListener = <B extends BlocBase<any>>(
-  props: any,
-): props is MultiBlocListenerProps<B> => props.listeners != null

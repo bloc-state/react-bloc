@@ -11,7 +11,11 @@ export interface User {
   age: number
 }
 
-export class UserState extends State<User> {}
+export class UserState extends State<User> {
+  constructor() {
+    super({ name: { first: "", last: "" }, age: 0 })
+  }
+}
 
 export class UserEvent extends BlocEvent {}
 
@@ -19,14 +23,6 @@ export class UserLastNameChangedEvent extends UserEvent {}
 
 export class UserNameChangedEvent extends UserEvent {
   constructor(public name: { first: string; last: string }) {
-    super()
-  }
-}
-
-export class UserBlocListenerEvent extends UserEvent {}
-
-export class UserMultiBlocListenerEvent extends UserEvent {
-  constructor(public count: number) {
     super()
   }
 }
@@ -45,31 +41,13 @@ export class UserAgeChangedEvent extends UserEvent {
 
 export class UserBloc extends Bloc<UserEvent, UserState> {
   constructor() {
-    const initialData = { name: { first: "", last: "" }, age: 0 }
-
-    super(new UserState(initialData))
+    super(new UserState())
 
     this.on(UserLastNameChangedEvent, async (event, emit) => {
       await delay(300)
       emit((state) =>
         state.ready((user) => {
           user.name.last = "parker"
-        }),
-      )
-    })
-
-    this.on(UserBlocListenerEvent, async (event, emit) => {
-      emit((state) =>
-        state.ready((user) => {
-          user.name.last = "bloc-listener"
-        }),
-      )
-    })
-
-    this.on(UserMultiBlocListenerEvent, async (event, emit) => {
-      emit((state) =>
-        state.ready((user) => {
-          user.name.last = `multi-bloc-listener-${event.count}`
         }),
       )
     })
@@ -105,5 +83,3 @@ export class UserBloc extends Bloc<UserEvent, UserState> {
     this.close()
   }
 }
-
-export * from "./components"

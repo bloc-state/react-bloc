@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment, createContext } from "react"
+import { useState, Fragment, createContext, useLayoutEffect } from "react"
 import {
   BlocModule,
   BlocProviderProps,
@@ -13,13 +13,12 @@ import {
 } from "../../context/context"
 import { asClass, createContainer } from "awilix"
 
-// Don't export the root container, let the BlocProvider abstract it away
-
+// Don't export the root container directly
 const rootContainer = createContainer()
 
 BlocProvider.getRegistrations = () => rootContainer.registrations
 
-BlocProvider.registerModules = (modules: BlocModule[]) => {
+export const registerModules = (modules: BlocModule[]) => {
   modules.forEach((module) => module(rootContainer))
 }
 
@@ -28,7 +27,7 @@ export function BlocProvider(
 ) {
   const [state, setState] = useState<BlocProviderState | null>(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const stateFromProps = getStateFromProps(props)
 
     setState(stateFromProps)

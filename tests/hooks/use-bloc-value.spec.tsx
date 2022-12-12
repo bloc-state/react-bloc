@@ -1,4 +1,3 @@
-import "reflect-metadata"
 import { cubitCounterWrapper as ccw } from "../test-helpers/wrappers"
 import { clearBlocContext } from "../../src/context/context"
 import { cleanup, renderHook } from "@testing-library/react"

@@ -1,4 +1,3 @@
-import "reflect-metadata"
 import { cleanup, renderHook } from "@testing-library/react"
 import { clearBlocContext } from "../../src/context/context"
 import { useBlocSelector } from "../../src"

@@ -1,4 +1,3 @@
-import "reflect-metadata"
 import { renderHook, act, cleanup } from "@testing-library/react"
 import { useBloc } from "../../src"
 import CounterCubit from "../test-helpers/counter/counter.cubit"

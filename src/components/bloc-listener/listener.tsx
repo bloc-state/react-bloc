@@ -1,15 +1,11 @@
 import { BlocBase } from "@bloc-state/bloc"
-import {
-  useLayoutSubscription,
-} from "observable-hooks"
+import { useLayoutSubscription, useObservable } from "observable-hooks"
 import { filter, map, pairwise } from "rxjs"
 import { getBlocContext } from "../../context"
 import { useBlocInstance } from "../../hooks"
 import {
   BlocListenerProps,
   BlocResolver,
-  isMultiBlocListener,
-  MultiBlocListenerProps,
 } from "../../types"
 
 export const get: BlocResolver = (blocClass, scope) => {
@@ -26,32 +22,35 @@ export const get: BlocResolver = (blocClass, scope) => {
   return blocContext.container.resolve(name)
 }
 
-export function subscribeToListener <B extends BlocBase<any>>(listener: BlocListenerProps<B>) {
-  const bloc = useBlocInstance(listener.bloc, listener.scope)
-  const blocListener = listener.listener ?? ( () => {})
-  const listenWhen = listener.listenWhen ?? (() => true)
-  const state$ = bloc.state$.pipe(
-    pairwise(),
-    filter( ( [ previous, current ] ) => {
-      return listenWhen(previous, current)
-    } ),
-    map(([_, current]) => current)
+export function subscribeToListener<B extends BlocBase<any>>({
+  bloc,
+  listener,
+  listenWhen,
+  scope,
+}: BlocListenerProps<B>) {
+  const blocInstance = useBlocInstance(bloc, scope)
+  const blocListener = listener
+  const when = listenWhen ?? (() => true)
+
+  const state$ = useObservable(() =>
+    blocInstance.state$.pipe(
+      pairwise(),
+      filter(([previous, current]) => {
+        return when(previous, current)
+      }),
+      map(([_, current]) => current),
+    ),
   )
 
-  useLayoutSubscription(state$, (next) => {
-    blocListener(get, next)
-  })
+  useLayoutSubscription( state$, ( next ) => {
+      blocListener(get, next)
+  },(error) => console.log("error called from useLayoutSub"))
 }
 
 export function BlocListener<B extends BlocBase<any>>(
-  props: React.PropsWithChildren<BlocListenerProps<B> | MultiBlocListenerProps<B>>,
+  props: React.PropsWithChildren<BlocListenerProps<B>>,
 ) {
+  subscribeToListener(props)
 
-  if (isMultiBlocListener(props)) {
-     props.listeners.forEach(subscribeToListener)
-  } else {
-    subscribeToListener(props)
-  }
-
-  return <>{props.children}</>
+  return <> {props.children} </>
 }

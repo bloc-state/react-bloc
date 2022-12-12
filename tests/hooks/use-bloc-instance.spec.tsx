@@ -1,5 +1,3 @@
-import "reflect-metadata"
-
 import { cleanup, render, renderHook } from "@testing-library/react"
 import "@testing-library/jest-dom"
 import { BlocProvider, useBlocInstance } from "../../src"

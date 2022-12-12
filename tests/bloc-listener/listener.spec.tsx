@@ -1,7 +1,5 @@
-import "reflect-metadata"
-import { cleanup, render, waitFor } from "@testing-library/react"
+import { cleanup, render, waitFor, screen } from "@testing-library/react"
 import {
-  UserMultiBlocListenerProvider,
   UserSingleBlocListenerProvider,
 } from "../test-helpers"
 import { clearBlocContext } from "../../src/context/context"
@@ -20,29 +18,20 @@ describe("BlocListener", () => {
     container.dispose()
   })
 
-  it("should listenTo states when single bloc listener", () => {
-    const { getByText } = render(UserSingleBlocListenerProvider())
+  it("should listen to states when single bloc listener", async () => {
+    expect.assertions(1)
+    render(UserSingleBlocListenerProvider(container))
 
-    waitFor(
+    await waitFor(
       () => {
-        getByText("bloc-listener")
+        screen.getByText("bloc-listener")
       },
       {
-        timeout: 2000,
+        timeout: 3000,
       },
     )
+
+    expect(screen.getByTestId("test-name").textContent).toBe("bloc-listener")
   })
 
-  it("should listenTo states with multi bloc listener", () => {
-    const { getByText } = render(UserMultiBlocListenerProvider())
-
-    waitFor(
-      () => {
-        getByText("multi-bloc-listener")
-      },
-      {
-        timeout: 2000,
-      },
-    )
-  })
 })
