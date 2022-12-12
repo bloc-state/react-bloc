@@ -1,3 +1,10 @@
+# [3.0.0-beta.5](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.4...v3.0.0-beta.5) (2022-12-12)
+
+
+### Bug Fixes
+
+* **BlocListener:** removed MultiBlocListener ([6fb8b3d](https://github.com/bloc-state/react-bloc/commit/6fb8b3dd00272af77dd03c254d0d88d328206df3))
+
 # [3.0.0-beta.4](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.3...v3.0.0-beta.4) (2022-12-11)
 
 
