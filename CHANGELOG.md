@@ -1,3 +1,11 @@
+# [3.0.0-beta.6](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.5...v3.0.0-beta.6) (2022-12-12)
+
+
+### Bug Fixes
+
+* **BlocProvider:** expose public registerModules method ([f122c8e](https://github.com/bloc-state/react-bloc/commit/f122c8e9a7022e9c828f8c12b734444c304560b0))
+* **BlocProvider:** switch useLayoutEffect to useEffect ([b45458d](https://github.com/bloc-state/react-bloc/commit/b45458de9ca1d15dd97248f5d5a0d01ce9a07f7d))
+
 # [3.0.0-beta.5](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.4...v3.0.0-beta.5) (2022-12-12)
 
 
