@@ -16,7 +16,7 @@ import { asClass, createContainer } from "awilix"
 // Don't export the root container directly
 const rootContainer = createContainer()
 
-BlocProvider.getRegistrations = () => rootContainer.registrations
+export const getRegistrations = () => rootContainer.registrations
 
 export const registerModules = (modules: BlocModule[]) => {
   modules.forEach((module) => module(rootContainer))
