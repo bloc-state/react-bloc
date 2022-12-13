@@ -1,3 +1,10 @@
+# [3.0.0-beta.7](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.6...v3.0.0-beta.7) (2022-12-13)
+
+
+### Bug Fixes
+
+* **deps:** add @bloc-state/state as peerDependency ([f3b20e9](https://github.com/bloc-state/react-bloc/commit/f3b20e90ae9b5aaf05da2e64ad7bf6e91258ac38))
+
 # [3.0.0-beta.6](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.5...v3.0.0-beta.6) (2022-12-12)
 
 
