@@ -1,10 +1,13 @@
 import { BlocBase, ClassType } from "@bloc-state/bloc"
-import { State, isStateInstance } from "@bloc-state/state"
-import { useForceUpdate, useObservableEagerState } from "observable-hooks"
-import { useEffect, useMemo } from "react"
+import { isStateInstance } from "@bloc-state/state"
+import {
+  ObservableResource,
+  useObservableEagerState,
+  useObservableSuspense,
+} from "observable-hooks"
+import { useMemo } from "react"
 import { filter, map, Observable } from "rxjs"
-import { SelectorStateType, UseBlocSelectorConfig } from "../types"
-import { StateResource } from "./state-resource"
+import { SelectorStateType, StateType, UseBlocSelectorConfig } from "../types"
 import { useBlocInstance } from "./use-bloc-instance"
 
 export function useBlocSelector<P, B extends BlocBase<any>>(
@@ -14,7 +17,7 @@ export function useBlocSelector<P, B extends BlocBase<any>>(
   const providedBloc = useBlocInstance(bloc)
   const isState = isStateInstance(providedBloc.state)
   const selector = config.selector
-  const suspend = config.suspend ?? true
+  const suspend = config.suspend ?? false
   const listenWhen = config.listenWhen ?? (() => true)
 
   const listenWhenState$ = useMemo(() => {
@@ -39,32 +42,25 @@ export function useBlocSelector<P, B extends BlocBase<any>>(
         )
       }, [])
 
-  if (suspend && isState) {
-    return useStateSuspense(listenWhenState$, config)
+  if (suspend) {
+    return useBlocSuspense(listenWhenState$, config)
   } else {
-    const state = useObservableEagerState(selectedState$)
-    return state
+    return useObservableEagerState(selectedState$)
   }
 }
 
-function useStateSuspense<P, B extends BlocBase<any>>(
-  state$: Observable<State>,
+function useBlocSuspense<P, B extends BlocBase<any>>(
+  state$: Observable<any>,
   config: UseBlocSelectorConfig<B, P>,
 ) {
   const selector = config.selector
-  const swr = config.swr ?? false
-  const updater = useForceUpdate()
+  const suspendWhen = config.suspendWhen ?? (() => true)
 
   const resource = useMemo(() => {
-    return new StateResource(state$, updater, swr)
+    return new ObservableResource(state$, (value) => suspendWhen(value))
   }, [])
 
-  useEffect(() => {
-    return () => {
-      resource.close()
-    }
-  }, [])
+  const state = useObservableSuspense(resource) as StateType<B>
 
-  const state = resource.read() as State
-  return selector(state.data)
+  return selector(isStateInstance(state) ? state.data : state)
 }

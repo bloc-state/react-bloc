@@ -1,5 +1,4 @@
 import { Bloc } from "@bloc-state/bloc"
-import { Disposable } from "tsyringe"
 import {
   CounterEvent,
   DecrementCounterEvent,
@@ -7,10 +6,7 @@ import {
 } from "./counter.event"
 import { CounterState } from "./counter.state"
 
-export class CounterBloc
-  extends Bloc<CounterEvent, CounterState>
-  implements Disposable
-{
+export class CounterBloc extends Bloc<CounterEvent, CounterState> {
   constructor() {
     super(new CounterState(0))
 

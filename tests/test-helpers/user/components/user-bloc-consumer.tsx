@@ -1,22 +1,26 @@
-import { UserBloc } from ".."
-import { useBlocSelector } from "../../../../src"
+import { UserBloc } from "../user"
+import { useBlocSelector, useBlocValue } from "../../../../src"
+import CounterCubit from "../../counter/counter.cubit"
 
 type UserBlocConsumerProps = {
-  swr?: boolean,
   suspend?: boolean
 }
 
-export const UserBlocConsumer = ({ swr, suspend }: UserBlocConsumerProps) => {
-  const lastName = useBlocSelector(UserBloc, {
-    selector: (state) => state.name.last,
-    swr,
-    suspend
+export const UserBlocConsumer = ({ suspend }: UserBlocConsumerProps) => {
+  const last = useBlocSelector( UserBloc, {
+    selector: (user) => user.name.last
   })
 
   return (
     <>
       <p data-testid="test-loaded">loaded</p>
-      <p data-testid="test-name">{lastName}</p>
+      <p data-testid="test-name">{last}</p>
     </>
   )
 }
+
+export const CounterBlocConsumer = () => {
+  const count = useBlocValue(CounterCubit)
+  return <p data-testid="test-counter">{count}</p>
+}
+

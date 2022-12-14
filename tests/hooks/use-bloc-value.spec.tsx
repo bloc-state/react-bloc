@@ -1,21 +1,22 @@
-import "reflect-metadata"
 import { cubitCounterWrapper as ccw } from "../test-helpers/wrappers"
 import { clearBlocContext } from "../../src/context/context"
 import { cleanup, renderHook } from "@testing-library/react"
 import { useBlocValue } from "../../src"
 import CounterCubit from "../test-helpers/counter/counter.cubit"
-import { container } from "tsyringe"
+import { AwilixContainer, createContainer } from "awilix"
 
 describe("useBlocValue", () => {
   let cubitCounterWrapper: ({ children }: any) => JSX.Element
+  let container: AwilixContainer
 
   beforeEach(() => {
     clearBlocContext()
     cubitCounterWrapper = ccw
+    container = createContainer()
   })
 
   afterAll(() => {
-    container.reset()
+    container.dispose()
   })
 
   afterEach(() => {

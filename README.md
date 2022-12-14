@@ -1,11 +1,11 @@
-# @bloc-state/bloc
+# @bloc-state/react-bloc
 
-![Codecov](https://badgen.net/npm/v/@bloc-state/react-bloc?color=black)
-![Codecov](https://badgen.net/bundlephobia/minzip/@bloc-state/react-bloc?color=black)
-![Codecov](https://badgen.net/codecov/c/github/bloc-state/react-bloc?color=black)
-![Codecov](https://badgen.net/npm/license/@bloc-state/react-bloc?color=black)
+[![npm version](https://badgen.net/npm/v/@bloc-state/react-bloc?color=black)](https://npm.im/@bloc-state/react-bloc)
+[![Codecov](https://badgen.net/codecov/c/github/bloc-state/react-bloc?color=black)](https://app.codecov.io/gh/bloc-state/react-bloc)
+[![Codecov](https://badgen.net/npm/license/@bloc-state/react-bloc?color=black)](https://raw.githubusercontent.com/bloc-state/react-bloc/main/LICENSE)
 
 ## Introduction
+
 React components and hooks for bloc-state
 
 ## Installation
@@ -17,78 +17,76 @@ npm install @bloc-state/react-bloc
 ```
 
 ## Components
+
 </br>
 
 ### BlocProvider
 
 ```ts
-const UserProvider = () => (
+const UserPage = () => (
   <BlocProvider
-    bloc={UserBloc}
+    bloc={[UserBloc]} // pass N number of bloc classes
     onCreate={(get) => get(UserBloc).add(new UserInitializedEvent())}
   >
     <SomeChildComponent />
   </BlocProvider>
 )
-
-// or if you need to add multiple blocs, pass an array of blocs, but you must provide a name for the provider
-
-const UserProvider = () => (
-  <BlocProvider
-    bloc={[ UserBloc, UserLocationBloc ]}
-    name="user-provider"
-    onCreate={(get) => 
-      get(UserLocationBloc).add(new UserLocationFetchingEvent())
-      get(UserBloc).add(new UserInitializedEvent())
-    }
-  >
-    <SomeChildComponent />
-  </BlocProvider>
-)
-
-// onCreate's first argument is a callback function that gets passed a BlocResolver.
-// This is useful for dispatching events before the Provider tree is rendered, very useful for render-as-you-fetch
 ```
 
 ### BlocListener
 
 ```ts
-const UserBlocListener = () => {
+const UserPage = () => {
   const history = useHistory()
+  const snackbar = useSnackbar()
 
   return (
-    <BlocListener
-      bloc={UserBloc}
-      listenWhen={(get, state) => !state.isAuthenticated}
-      listen={(get, state) => history.push("/login")}
+    <BlocProvider
+      bloc={[ UserBloc ]}
+      onCreate={(get) => {
+        get(UserBloc).add(new UserInitializedEvent())
+      }
     >
-      <SomeChildComponent />
-    </BlocListener>
+      <BlocListener
+        bloc={UserBloc}
+        listenWhen={(previous, current) => current.status === "failure"}
+        listener={(get, state) => snackbar.open(state.error?.message) }
+      >
+        <SomeChildComponent />
+      </BlocListener>
+    </BlocProvider>
   )
 }
 
-// or if you need to listen to multiple blocs
+// or if you need multiple bloc listeners, create siblings
 
-const UserBlocListener = () => {
+const UserPage = () => {
   const history = useHistory()
 
   return (
-    <BlocListener
-      bloc={[ UserBloc, UserLocationBloc ]}
-
-      listen={(get, state) => {
-        history.push("/login")
-      }}
-
-      listenWhen={(get, state) => {
-        return !state.isAuthenticated
-      }}
+    <BlocProvider
+      bloc={[ UserBloc ]} // pass N number of bloc classes
+      onCreate={(get) =>
+        get(UserBloc).add(new UserInitializedEvent())
+      }
     >
-      <SomeChildComponent />
-    </BlocListener>
+      <>
+        <BlocListener
+          bloc={UserBloc}
+          listenWhen={(previous, current) => !current.data.isAuthenticated}
+          listener={(get, state) => history.push("/login")}
+        />
+        <BlocListener
+          bloc={UserBloc}
+          listenWhen={(previous, current) => previous.data.randomeData && !current.data.someOtherData}
+          listener={(get, state) => openSnackBar(state)} // some other side-effect
+        />
+        <SomeChildComponent />
+      </>
+    </BlocProvider>
   )
-
 }
+
 ```
 
 ## Hooks
@@ -105,7 +103,6 @@ export const SomeComponent = () => {
     </>
   )
 }
-
 ```
 
 ### useBlocValue
@@ -120,7 +117,6 @@ export const SomeComponent = () => {
     </>
   )
 }
-
 ```
 
 ### useSetBloc
@@ -133,21 +129,32 @@ export const SomeComponent = () => {
 
   return (
     <>
-      <a onClick={() => emit((count) => count + 1) }></a>
+      <a onClick={() => emit((count) => count + 1)}></a>
     </>
   )
 }
-
 ```
 
 ### useBlocSelector
 
 ```ts
-export const SomeComponent = () => {
+type SomeComponentProps = {
+  id: number
+}
+
+export const SomeComponent = ({ id }: SomeComponentProps) => {
   const lastName = useBlocSelector(UserBloc, {
+    // required: a pure selector function for narrowing your state
     selector: (state) => state.name.last,
-    swr: true, // optional when suspense is enabled, stale-while-revalidate, allows a component to only suspend on intial load, future loading states will be ignored, defaults to false
-    suspend: true // optional, defaults to true, if set to true components will suspend when loading states are emitted
+
+    // optional: decide when to listen to state changes, a state change causes a rerender
+    listenWhen: (state) => state.id === id,
+
+    // optional: decide when a component should suspend, if suspend is enabled
+    suspendWhen: (state) => state.status === "loading",
+
+    // optional, defaults to false, if set to true components will suspend when suspendWhen returns true
+    suspend: true,
   })
 
   return (
@@ -164,16 +171,15 @@ export const SomeComponent = () => {
 export const SomeComponent = () => {
   // returns a tuple with the state as first index and the bloc instance as second index
   // optionally takes a useBlocSelector config object, so it can be used to read as well as emit events with bloc intance
-  const [state, bloc] = useBloc(UserBloc, {
-    selector: (state) => state.name.last,
-  }) 
+  const [id, bloc] = useBloc(UserBloc, {
+    selector: (state) => state.data.id,
+  })
 
   // should only be used with cubits, blocs use events to change state in a bloc
   return (
     <>
-      <a onClick={() => emit((count) => count + 1) }></a>
+      <a onClick={() => bloc.add(new UserLoggedOutEvent(id))}></a>
     </>
   )
 }
-
 ```

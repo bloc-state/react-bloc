@@ -1,7 +1,6 @@
 import { Cubit } from "@bloc-state/bloc"
-import { Disposable } from "tsyringe"
 
-export default class CounterCubit extends Cubit<number> implements Disposable {
+export default class CounterCubit extends Cubit<number> {
   constructor() {
     super(0)
   }

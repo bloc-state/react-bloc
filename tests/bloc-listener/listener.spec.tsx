@@ -1,41 +1,37 @@
-import "reflect-metadata"
-import { cleanup, render, waitFor } from "@testing-library/react"
-import {   UserMultiBlocListenerProvider, UserSingleBlocListenerProvider } from "../test-helpers"
-import {  clearBlocContext } from "../../src/context/context"
-import { container as parentContainer } from "tsyringe"
+import { cleanup, render, waitFor, screen } from "@testing-library/react"
+import {
+  UserSingleBlocListenerProvider,
+} from "../test-helpers"
+import { clearBlocContext } from "../../src/context/context"
+import { AwilixContainer, createContainer } from "awilix"
 
 describe("BlocListener", () => {
+  let container: AwilixContainer
 
   beforeEach(() => {
-    parentContainer.reset()
+    container = createContainer()
   })
 
   afterEach(() => {
     cleanup()
     clearBlocContext()
+    container.dispose()
   })
 
-  it("should listenTo states when single bloc listener", () => {
+  it("should listen to states when single bloc listener", async () => {
+    expect.assertions(1)
+    render(UserSingleBlocListenerProvider(container))
 
+    await waitFor(
+      () => {
+        screen.getByText("bloc-listener")
+      },
+      {
+        timeout: 3000,
+      },
+    )
 
-    const  {getByText} = render(UserSingleBlocListenerProvider())
-
-    waitFor( () => {
-      getByText("bloc-listener")
-    }, {
-      timeout: 2000
-    })
+    expect(screen.getByTestId("test-name").textContent).toBe("bloc-listener")
   })
 
-  it("should listenTo states with multi bloc listener", () => {
-
-
-    const  {getByText} = render(UserMultiBlocListenerProvider())
-
-    waitFor( () => {
-      getByText("multi-bloc-listener")
-    }, {
-      timeout: 2000
-    })
-  })
 })

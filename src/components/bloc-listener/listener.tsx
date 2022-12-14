@@ -1,43 +1,56 @@
-import { BlocBase, ClassType } from "@bloc-state/bloc"
-import { useObservableEagerState } from "observable-hooks"
-import { filter, mergeWith } from "rxjs"
+import { BlocBase } from "@bloc-state/bloc"
+import { useLayoutSubscription, useObservable } from "observable-hooks"
+import { filter, map, pairwise } from "rxjs"
+import { getBlocContext } from "../../context"
 import { useBlocInstance } from "../../hooks"
 import {
   BlocListenerProps,
   BlocResolver,
-  isMultiBlocListener,
 } from "../../types"
 
-export function BlocListener<State = any>(
-  props: React.PropsWithChildren<BlocListenerProps<State>>,
-) {
-  const _props = props as BlocListenerProps<State>
-  const listenWhen = props.listenWhen ?? (() => true)
+export const get: BlocResolver = (blocClass, scope) => {
+  const name = scope ? `${scope}-${blocClass.name}` : blocClass.name
 
-  const get: BlocResolver = (blocClass) => {
-    return useBlocInstance(blocClass)
-  }
+  const blocContext = getBlocContext(name)
 
-  if (isMultiBlocListener(_props)) {
-    const state$ = _props.bloc.map((bloc) => useBlocInstance(bloc).state$)
-
-    const mergedStream$ = state$
-      .reduce((a, b) => a.pipe(mergeWith(b)))
-      .pipe(filter((state) => listenWhen(get, state)))
-
-    const state = useObservableEagerState(mergedStream$)
-
-    props.listen(get, state)
-  } else {
-    const bloc = props.bloc as ClassType<BlocBase<State>>
-    const state$ = useBlocInstance(bloc).state$.pipe(
-      filter((state) => listenWhen(get, state)),
+  if (!blocContext) {
+    throw new Error(
+      `BlocListener: bloc listener could not find context "${blocClass.name}"`,
     )
-
-    const state = useObservableEagerState(state$)
-
-    props.listen(get, state)
   }
 
-  return <>{props.children}</>
+  return blocContext.container.resolve(name)
+}
+
+export function subscribeToListener<B extends BlocBase<any>>({
+  bloc,
+  listener,
+  listenWhen,
+  scope,
+}: BlocListenerProps<B>) {
+  const blocInstance = useBlocInstance(bloc, scope)
+  const blocListener = listener
+  const when = listenWhen ?? (() => true)
+
+  const state$ = useObservable(() =>
+    blocInstance.state$.pipe(
+      pairwise(),
+      filter(([previous, current]) => {
+        return when(previous, current)
+      }),
+      map(([_, current]) => current),
+    ),
+  )
+
+  useLayoutSubscription( state$, ( next ) => {
+      blocListener(get, next)
+  },(error) => console.log("error called from useLayoutSub"))
+}
+
+export function BlocListener<B extends BlocBase<any>>(
+  props: React.PropsWithChildren<BlocListenerProps<B>>,
+) {
+  subscribeToListener(props)
+
+  return <> {props.children} </>
 }

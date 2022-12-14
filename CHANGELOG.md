@@ -1,9 +1,70 @@
-## [2.1.2](https://github.com/bloc-state/react-bloc/compare/v2.1.1...v2.1.2) (2022-11-24)
+
+# [3.0.0-beta.8](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.7...v3.0.0-beta.8) (2022-12-14)
+
+
+### Bug Fixes
+
+* **useBlocSelector:** update suspendWhen predicate ([d603188](https://github.com/bloc-state/react-bloc/commit/d603188e8142b1923015386e2d7d8ee29b0c2fdd))
+
+# [3.0.0-beta.7](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.6...v3.0.0-beta.7) (2022-12-13)
+
+
+### Bug Fixes
+
+* **deps:** add @bloc-state/state as peerDependency ([f3b20e9](https://github.com/bloc-state/react-bloc/commit/f3b20e90ae9b5aaf05da2e64ad7bf6e91258ac38))
+
+# [3.0.0-beta.6](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.5...v3.0.0-beta.6) (2022-12-12)
+
+
+### Bug Fixes
+
+* **BlocProvider:** expose public registerModules method ([f122c8e](https://github.com/bloc-state/react-bloc/commit/f122c8e9a7022e9c828f8c12b734444c304560b0))
+* **BlocProvider:** switch useLayoutEffect to useEffect ([b45458d](https://github.com/bloc-state/react-bloc/commit/b45458de9ca1d15dd97248f5d5a0d01ce9a07f7d))
+
+# [3.0.0-beta.5](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.4...v3.0.0-beta.5) (2022-12-12)
+
+
+### Bug Fixes
+
+* **BlocListener:** removed MultiBlocListener ([6fb8b3d](https://github.com/bloc-state/react-bloc/commit/6fb8b3dd00272af77dd03c254d0d88d328206df3))
+
+# [3.0.0-beta.4](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.3...v3.0.0-beta.4) (2022-12-11)
+
+
+### Features
+
+* switched to Awilix from Tsyringe for IoC ([51fd480](https://github.com/bloc-state/react-bloc/commit/51fd480e9fc28fa82683dfeece7852a77ca32589))
+
+# [3.0.0-beta.3](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.2...v3.0.0-beta.3) (2022-11-26)
+
+
+### Features
+
+* **context:** expose context containers in blocContext ([b588824](https://github.com/bloc-state/react-bloc/commit/b588824a974fd91f2adce5380371d017622fd74b))
+
+# [3.0.0-beta.2](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.1...v3.0.0-beta.2) (2022-11-25)
+
+
+### Bug Fixes
+
+* **bloc-listener:** use useLayoutEffect instead of useEffect ([b0c47ba](https://github.com/bloc-state/react-bloc/commit/b0c47bac1646837e8041d3c6b70dc8b765e36db0))
+
+# [3.0.0-beta.1](https://github.com/bloc-state/react-bloc/compare/v2.1.1...v3.0.0-beta.1) (2022-11-25)
+
 
 
 ### Bug Fixes
 
 * **BlocListener:** fix imports for BlocListener ([8080c27](https://github.com/bloc-state/react-bloc/commit/8080c2726ec3fdb91e3bee30820fa1b20646f42b))
+
+* **state-resource:** removed state resource feature ([b2c9f16](https://github.com/bloc-state/react-bloc/commit/b2c9f16983b89bfab4dc70d8f638048f3864d190))
+
+
+### BREAKING CHANGES
+
+* **state-resource:** removing StateResource in favor of ObservableResource
+from observable-hooks library
+s
 
 ## [2.1.1](https://github.com/bloc-state/react-bloc/compare/v2.1.0...v2.1.1) (2022-11-24)
 
