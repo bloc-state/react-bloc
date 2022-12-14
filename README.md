@@ -78,8 +78,8 @@ const UserPage = () => {
         />
         <BlocListener
           bloc={UserBloc}
-          listenWhen={(previous, current) => !current.data.isAuthenticated}
-          listener={(get, state) => history.push("/login")}
+          listenWhen={(previous, current) => previous.data.randomeData && !current.data.someOtherData}
+          listener={(get, state) => openSnackBar(state)} // some other side-effect
         />
         <SomeChildComponent />
       </>
