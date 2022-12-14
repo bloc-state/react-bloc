@@ -1,3 +1,10 @@
+# [3.0.0-beta.8](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.7...v3.0.0-beta.8) (2022-12-14)
+
+
+### Bug Fixes
+
+* **useBlocSelector:** update suspendWhen predicate ([d603188](https://github.com/bloc-state/react-bloc/commit/d603188e8142b1923015386e2d7d8ee29b0c2fdd))
+
 # [3.0.0-beta.7](https://github.com/bloc-state/react-bloc/compare/v3.0.0-beta.6...v3.0.0-beta.7) (2022-12-13)
 
 
