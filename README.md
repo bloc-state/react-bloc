@@ -144,17 +144,20 @@ type SomeComponentProps = {
 
 export const SomeComponent = ({ id }: SomeComponentProps) => {
   const lastName = useBlocSelector(UserBloc, {
+  
     // required: a pure selector function for narrowing your state
     selector: (state) => state.name.last,
 
-    // optional: decide when to listen to state changes, a state change causes a rerender
+    // optional: decide which state changes a component should react to
+    // it will rerender for all state changes by default
     listenWhen: (state) => state.id === id,
 
-    // optional: decide when a component should suspend, if suspend is enabled
+    // optional: defaults to false, if set to true components will suspend when suspendWhen returns true
+    suspend: true,
+    
+    // optional: if suspend is enabled, decide when a component should suspend
     suspendWhen: (state) => state.status === "loading",
 
-    // optional, defaults to false, if set to true components will suspend when suspendWhen returns true
-    suspend: true,
   })
 
   return (
@@ -169,13 +172,14 @@ export const SomeComponent = ({ id }: SomeComponentProps) => {
 
 ```ts
 export const SomeComponent = () => {
+
   // returns a tuple with the state as first index and the bloc instance as second index
   // optionally takes a useBlocSelector config object, so it can be used to read as well as emit events with bloc intance
+  
   const [id, bloc] = useBloc(UserBloc, {
     selector: (state) => state.data.id,
   })
 
-  // should only be used with cubits, blocs use events to change state in a bloc
   return (
     <>
       <a onClick={() => bloc.add(new UserLoggedOutEvent(id))}></a>
