@@ -53,7 +53,7 @@ export function BlocProvider(
         stateFromProps.container.dispose()
       }
     }
-  }, [])
+  }, props.deps || [])
 
   if (state) {
     return (

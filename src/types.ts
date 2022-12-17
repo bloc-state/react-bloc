@@ -49,6 +49,7 @@ export type OnCreate = (
 
 export type BlocProviderProps = {
   bloc: [ClassType<BlocBase>, ...ClassType<BlocBase>[]]
+  deps?: React.DependencyList
   scope?: string
   onCreate?: OnCreate
   container?: AwilixContainer
