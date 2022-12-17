@@ -1,3 +1,16 @@
+# [3.1.0](https://github.com/bloc-state/react-bloc/compare/v3.0.0...v3.1.0) (2022-12-17)
+
+
+### Bug Fixes
+
+* **useBloc:** change useObservableState to useObservableEagerState ([b0298d9](https://github.com/bloc-state/react-bloc/commit/b0298d9cec45daf4103be5b8890ed13db5c8300c))
+* **useBlocSelector:** fix suspendWhen logic ([7e8b330](https://github.com/bloc-state/react-bloc/commit/7e8b330b3a772bfb6708a41c8d87b51f222dfbf1))
+
+
+### Features
+
+* **BlocProvider:** added optional deps props ([49cf503](https://github.com/bloc-state/react-bloc/commit/49cf50385249528ebdc26a365ce3ece72ddb060c))
+
 # [3.0.0](https://github.com/bloc-state/react-bloc/compare/v2.1.2...v3.0.0) (2022-12-14)
 
 
