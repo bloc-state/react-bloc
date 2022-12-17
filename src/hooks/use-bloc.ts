@@ -1,10 +1,10 @@
 import { BlocBase, ClassType } from "@bloc-state/bloc"
-import { useObservableState } from "observable-hooks"
-import { UseBlocConfig, UseBlocSelectorConfig } from "../types"
+import { useObservableEagerState } from "observable-hooks"
+import { StateType, UseBlocConfig, UseBlocSelectorConfig } from "../types"
 import { useBlocInstance } from "./use-bloc-instance"
 import { useBlocSelector } from "./use-bloc-selector"
 
-export function useBloc<P, B extends BlocBase<any>>(
+export function useBloc<B extends BlocBase<any>, P = StateType<B>>(
   bloc: ClassType<B>,
   config?: UseBlocSelectorConfig<B, P> & UseBlocConfig,
 ): ReturnType<() => [P, B]> {
@@ -12,9 +12,6 @@ export function useBloc<P, B extends BlocBase<any>>(
   if (config?.selector) {
     return [useBlocSelector(bloc, config), providedBloc]
   } else {
-    return [
-      useObservableState(providedBloc.state$, providedBloc.state),
-      providedBloc,
-    ]
+    return [useObservableEagerState(providedBloc.state$), providedBloc]
   }
 }
