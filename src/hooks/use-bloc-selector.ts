@@ -54,10 +54,10 @@ function useBlocSuspense<P, B extends BlocBase<any>>(
   config: UseBlocSelectorConfig<B, P>,
 ) {
   const selector = config.selector
-  const suspendWhen = config.suspendWhen ?? (() => true)
+  const suspendWhen = config.suspendWhen ?? (() => false)
 
   const resource = useMemo(() => {
-    return new ObservableResource(state$, (value) => suspendWhen(value))
+    return new ObservableResource(state$, (value) => !suspendWhen(value))
   }, [])
 
   const state = useObservableSuspense(resource) as StateType<B>
