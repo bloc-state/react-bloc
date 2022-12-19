@@ -8,8 +8,4 @@ export default class CounterCubit extends Cubit<number> {
   increment = () => this.emit((data) => data + 1)
 
   decrement = () => this.emit((data) => data - 1)
-
-  dispose() {
-    this.close()
-  }
 }

@@ -1,5 +1,5 @@
-import { cleanup, render } from "@testing-library/react"
-import { UserBloc, UserMultiBlocProvider } from "../test-helpers"
+import { cleanup, render, waitFor, screen } from "@testing-library/react"
+import { UserBloc, UserMultiBlocProvider, UserScopedBlocProvider } from "../test-helpers"
 import { addBlocContext, clearBlocContext } from "../../src/context/context"
 import { createContext } from "react"
 import { AwilixContainer, createContainer } from "awilix"
@@ -31,5 +31,22 @@ describe("BlocProvider", () => {
     expect(() => {
       render(UserMultiBlocProvider())
     }).toThrow()
+  })
+
+  it("should provide scoped blocs", async () => {
+    expect.assertions(1)
+    const { getByText } = render(UserScopedBlocProvider())
+
+     await waitFor(
+      () => {
+        getByText("scoped-test")
+      },
+      {
+        timeout: 3000,
+      },
+    )
+
+    expect(screen.getByTestId("test-name").textContent).toBe("scoped-test")
+
   })
 })

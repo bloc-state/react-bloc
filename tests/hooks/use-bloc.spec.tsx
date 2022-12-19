@@ -45,7 +45,6 @@ describe("useBloc", () => {
       () =>
         useBloc(UserBloc, {
           selector: (state) => state.name.first,
-          suspend: false,
         }),
       { wrapper: blocUserWrapper },
     )

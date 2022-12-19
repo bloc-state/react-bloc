@@ -1,13 +1,12 @@
 import { cleanup, render, renderHook } from "@testing-library/react"
 import "@testing-library/jest-dom"
-import { BlocProvider, useBlocInstance } from "../../src"
+import {  useBlocInstance } from "../../src"
 import { clearBlocContext } from "../../src/context/context"
 import {
   cubitCounterWrapper as ccw,
   blocUserWrapper as buw,
 } from "../test-helpers/wrappers"
 import CounterCubit from "../test-helpers/counter/counter.cubit"
-import { UserBloc } from "../test-helpers/user/user"
 import { CounterBlocConsumer } from "../test-helpers/counter/components/counter-cubit-consumer"
 import { AwilixContainer, createContainer } from "awilix"
 
@@ -53,18 +52,4 @@ describe("useBlocInstance", () => {
     expect(resultTest).toThrow()
   })
 
-  it("should throw an error if a bloc does not exist in multi bloc provider", () => {
-    expect.assertions(1)
-    const multiBlocProvider = ({ children }: any) => (
-      <BlocProvider bloc={[UserBloc, CounterCubit]}>{children}</BlocProvider>
-    )
-
-    const resultTest = () => {
-      render(<CounterBlocConsumer />, {
-        wrapper: multiBlocProvider,
-      })
-    }
-
-    expect(resultTest).toThrow()
-  })
 })

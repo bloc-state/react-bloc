@@ -2,6 +2,7 @@ import { BlocBase, ClassType } from "@bloc-state/bloc"
 import { isStateInstance } from "@bloc-state/state"
 import {
   ObservableResource,
+  useObservable,
   useObservableEagerState,
   useObservableSuspense,
 } from "observable-hooks"
@@ -14,26 +15,25 @@ export function useBlocSelector<P, B extends BlocBase<any>>(
   bloc: ClassType<B>,
   config: UseBlocSelectorConfig<B, P>,
 ): P {
-  const providedBloc = useBlocInstance(bloc)
+  const providedBloc = useBlocInstance(bloc, config.scope)
   const isState = isStateInstance(providedBloc.state)
   const selector = config.selector
-  const suspend = config.suspend ?? false
   const listenWhen = config.listenWhen ?? (() => true)
 
-  const listenWhenState$ = useMemo(() => {
+  const listenWhenState$ = useObservable(() => {
     return providedBloc.state$.pipe(filter(listenWhen))
   }, [])
 
   const selectedState$ = isState
-    ? useMemo(() => {
+    ? useObservable(() => {
         return listenWhenState$.pipe(
           map((state) => {
             const _state = state as SelectorStateType<B>
             return selector(_state.data)
           }),
         )
-      }, [])
-    : useMemo(() => {
+      })
+    : useObservable(() => {
         return listenWhenState$.pipe(
           map((state) => {
             const _state = state as SelectorStateType<B>
@@ -42,7 +42,7 @@ export function useBlocSelector<P, B extends BlocBase<any>>(
         )
       }, [])
 
-  if (suspend) {
+  if (config.suspendWhen) {
     return useBlocSuspense(listenWhenState$, config)
   } else {
     return useObservableEagerState(selectedState$)
@@ -54,7 +54,7 @@ function useBlocSuspense<P, B extends BlocBase<any>>(
   config: UseBlocSelectorConfig<B, P>,
 ) {
   const selector = config.selector
-  const suspendWhen = config.suspendWhen ?? (() => false)
+  const suspendWhen = config.suspendWhen!
 
   const resource = useMemo(() => {
     return new ObservableResource(state$, (value) => !suspendWhen(value))

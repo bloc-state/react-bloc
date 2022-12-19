@@ -24,9 +24,9 @@ export type UseBlocConfig = {
 
 export type UseBlocSelectorConfig<B extends BlocBase<any>, P> = {
   selector: (state: SelectorStateType<B>) => P
+  scope?: string
   listenWhen?: (state: StateType<B>) => boolean
   suspendWhen?: (state: StateType<B>) => boolean
-  suspend?: boolean
 }
 
 export type BlocType<T extends BlocBase<any>> = T extends Bloc<infer E, infer S>
