@@ -1,8 +1,8 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@bloc-state/bloc': ^2.0.1
-  '@bloc-state/state': ^2.1.2
+  '@bloc-state/bloc': ^2.0.2
+  '@bloc-state/state': ^2.1.4
   '@commitlint/cli': ^17.2.0
   '@commitlint/config-conventional': ^17.2.0
   '@egoist/prettier-config': 1.0.0
@@ -33,8 +33,8 @@ dependencies:
   observable-hooks: 4.2.1_eg6o7gurzkmlt7b63gbvziog74
 
 devDependencies:
-  '@bloc-state/bloc': 2.0.1_rxjs@7.5.7
-  '@bloc-state/state': 2.1.2
+  '@bloc-state/bloc': 2.0.2_rxjs@7.5.7
+  '@bloc-state/state': 2.1.4
   '@commitlint/cli': 17.3.0_@swc+core@1.3.19
   '@commitlint/config-conventional': 17.3.0
   '@egoist/prettier-config': 1.0.0
@@ -412,16 +412,16 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@bloc-state/bloc/2.0.1_rxjs@7.5.7:
-    resolution: {integrity: sha512-SvSA+Du3tLZnmawwmyFJcQp7yiYTzFJQDkS747E+PHrT+bUThvjfMdL7M7DLnrT/vWfD4er2P6g0s8RHiZBONw==}
+  /@bloc-state/bloc/2.0.2_rxjs@7.5.7:
+    resolution: {integrity: sha512-y6K4D4ZdMkqpXsHSDy3VUcA7v+N4PfxgE6Vvqukd8NUN5ubgKgsOqcxWi+D47a2yuKOLOk+kwRmtt6lhAvMrPg==}
     peerDependencies:
       rxjs: ^7.5.7
     dependencies:
       rxjs: 7.5.7
     dev: true
 
-  /@bloc-state/state/2.1.2:
-    resolution: {integrity: sha512-nRKwZN8sWHbk+zJcCb4/5FQ/baz7egZ+ceXFayFgq94r5PuMniXhcrHBpY3hz2x+KAAAulMtIpvUlggdNlwwpQ==}
+  /@bloc-state/state/2.1.4:
+    resolution: {integrity: sha512-2n000i8OclNwXxVs+cBcNythYOShxcew6cIcbhfDKYW4OGtgj9CIVfq22k6QZhVXjN9/wEFrkeffWyI56+CM4w==}
     dependencies:
       immer: 9.0.16
     dev: true
