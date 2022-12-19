@@ -2,7 +2,7 @@ import { cleanup, render, waitFor, screen } from "@testing-library/react"
 import {
   UserSingleBlocListenerProvider,
 } from "../test-helpers"
-import { clearBlocContext } from "../../src/context/context"
+import {  clearBlocContext } from "../../src/context/context"
 import { AwilixContainer, createContainer } from "awilix"
 
 describe("BlocListener", () => {
@@ -33,5 +33,4 @@ describe("BlocListener", () => {
 
     expect(screen.getByTestId("test-name").textContent).toBe("bloc-listener")
   })
-
 })

@@ -3,7 +3,6 @@ import {
   BlocModule,
   BlocProviderProps,
   BlocProviderState,
-  BlocResolver,
 } from "../../types"
 import {
   addBlocContext,
@@ -12,6 +11,7 @@ import {
   removeBlocContext,
 } from "../../context/context"
 import { asClass, createContainer } from "awilix"
+import { resolver } from "../../context/resolver"
 
 // Don't export the root container directly
 const rootContainer = createContainer()
@@ -33,18 +33,8 @@ export function BlocProvider(
     setState(stateFromProps)
 
     if (props.onCreate) {
-      const getter: BlocResolver = (blocClass, scope) => {
-        const name = scope ? `${scope}-${blocClass.name}` : blocClass.name
-        const context = getBlocContext(name)
-        if (!context) {
-          throw new Error(
-            `BlocProvider: BlocProvider could not find context "${name}"`,
-          )
-        }
-        return context.container.resolve(name)
-      }
 
-      props.onCreate(getter)
+      props.onCreate(resolver)
     }
 
     return () => {
