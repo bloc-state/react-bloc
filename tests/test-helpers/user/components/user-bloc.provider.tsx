@@ -3,7 +3,10 @@ import { Suspense } from "react"
 import { UserBloc, UserLastNameAsyncChangedEvent } from "../user"
 import { BlocProvider } from "../../../../src"
 import { BlocListener } from "../../../../src/components/bloc-listener/listener"
-import { UserBlocConsumer, UserBlocConsumerWithScope } from "./user-bloc-consumer"
+import {
+  UserBlocConsumer,
+  UserBlocConsumerWithScope,
+} from "./user-bloc-consumer"
 import CounterCubit from "../../counter/counter.cubit"
 
 export const UserSingleBlocListenerProvider = (container?: AwilixContainer) => (
@@ -25,7 +28,10 @@ export const UserSingleBlocListenerProvider = (container?: AwilixContainer) => (
   </BlocProvider>
 )
 
-export const UserBlocProvider = (container?: AwilixContainer, suspendWhen?: (state: any) => boolean) => (
+export const UserBlocProvider = (
+  container?: AwilixContainer,
+  suspendWhen?: (state: any) => boolean,
+) => (
   <BlocProvider
     bloc={[UserBloc]}
     container={container}
@@ -44,10 +50,11 @@ export const UserScopedBlocProvider = (container?: AwilixContainer) => (
     bloc={[UserBloc]}
     container={container}
     scope="test"
-    onCreate={ ( get ) => {
-      get(UserBloc, "test").add(new UserLastNameAsyncChangedEvent("scoped-test"))
-    }
-    }
+    onCreate={(get) => {
+      get(UserBloc, "test").add(
+        new UserLastNameAsyncChangedEvent("scoped-test"),
+      )
+    }}
   >
     <Suspense fallback={<div data-testid="test-loading">loading</div>}>
       <UserBlocConsumerWithScope />

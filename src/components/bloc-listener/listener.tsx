@@ -1,12 +1,9 @@
 import { BlocBase } from "@bloc-state/bloc"
-import { useLayoutSubscription, useObservable} from "observable-hooks"
+import { useLayoutSubscription, useObservable } from "observable-hooks"
 import { filter, map, pairwise } from "rxjs"
 import { useBlocInstance } from "../../hooks"
-import {
-  BlocListenerProps,
-} from "../../types"
+import { BlocListenerProps } from "../../types"
 import { resolver } from "../../context/resolver"
-
 
 export function subscribeToListener<B extends BlocBase<any>>({
   bloc,
@@ -28,8 +25,8 @@ export function subscribeToListener<B extends BlocBase<any>>({
     ),
   )
 
-  useLayoutSubscription( state$, ( next ) => {
-      blocListener(resolver, next)
+  useLayoutSubscription(state$, (next) => {
+    blocListener(resolver, next)
   })
 }
 

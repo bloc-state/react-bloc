@@ -144,7 +144,6 @@ type SomeComponentProps = {
 
 export const SomeComponent = ({ id }: SomeComponentProps) => {
   const lastName = useBlocSelector(UserBloc, {
-  
     // required: a pure selector function for narrowing your state
     selector: (state) => state.name.last,
 
@@ -154,10 +153,9 @@ export const SomeComponent = ({ id }: SomeComponentProps) => {
 
     // optional: defaults to false, if set to true components will suspend when suspendWhen returns true
     suspend: true,
-    
+
     // optional: if suspend is enabled, decide when a component should suspend
     suspendWhen: (state) => state.status === "loading",
-
   })
 
   return (
@@ -172,10 +170,9 @@ export const SomeComponent = ({ id }: SomeComponentProps) => {
 
 ```ts
 export const SomeComponent = () => {
-
   // returns a tuple with the state as first index and the bloc instance as second index
   // optionally takes a useBlocSelector config object, so it can be used to read as well as emit events with bloc intance
-  
+
   const [id, bloc] = useBloc(UserBloc, {
     selector: (state) => state.data.id,
   })

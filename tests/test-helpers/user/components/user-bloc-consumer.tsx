@@ -1,13 +1,13 @@
 import { UserBloc } from "../user"
-import { useBlocSelector} from "../../../../src"
+import { useBlocSelector } from "../../../../src"
 
 type UserBlocConsumerProps = {
   suspendWhen?: (state: any) => boolean
 }
 
-export const UserBlocConsumer = ({ suspendWhen  }: UserBlocConsumerProps) => {
-  const last = useBlocSelector( UserBloc, {
-    selector: ( user ) => user.name.last,
+export const UserBlocConsumer = ({ suspendWhen }: UserBlocConsumerProps) => {
+  const last = useBlocSelector(UserBloc, {
+    selector: (user) => user.name.last,
     suspendWhen,
   })
 
@@ -19,11 +19,10 @@ export const UserBlocConsumer = ({ suspendWhen  }: UserBlocConsumerProps) => {
   )
 }
 
-
 export const UserBlocConsumerWithScope = () => {
-  const last = useBlocSelector( UserBloc, {
+  const last = useBlocSelector(UserBloc, {
     scope: "test",
-    selector: ( user ) => user.name.last,
+    selector: (user) => user.name.last,
   })
 
   return (
@@ -33,6 +32,3 @@ export const UserBlocConsumerWithScope = () => {
     </>
   )
 }
-
-
-

@@ -1,6 +1,6 @@
 import { cleanup, render, renderHook } from "@testing-library/react"
 import "@testing-library/jest-dom"
-import {  useBlocInstance } from "../../src"
+import { useBlocInstance } from "../../src"
 import { clearBlocContext } from "../../src/context/context"
 import {
   cubitCounterWrapper as ccw,
@@ -51,5 +51,4 @@ describe("useBlocInstance", () => {
     }
     expect(resultTest).toThrow()
   })
-
 })

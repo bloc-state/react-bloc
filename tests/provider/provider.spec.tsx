@@ -1,5 +1,9 @@
 import { cleanup, render, waitFor, screen } from "@testing-library/react"
-import { UserBloc, UserMultiBlocProvider, UserScopedBlocProvider } from "../test-helpers"
+import {
+  UserBloc,
+  UserMultiBlocProvider,
+  UserScopedBlocProvider,
+} from "../test-helpers"
 import { addBlocContext, clearBlocContext } from "../../src/context/context"
 import { createContext } from "react"
 import { AwilixContainer, createContainer } from "awilix"
@@ -37,7 +41,7 @@ describe("BlocProvider", () => {
     expect.assertions(1)
     const { getByText } = render(UserScopedBlocProvider())
 
-     await waitFor(
+    await waitFor(
       () => {
         getByText("scoped-test")
       },
@@ -47,6 +51,5 @@ describe("BlocProvider", () => {
     )
 
     expect(screen.getByTestId("test-name").textContent).toBe("scoped-test")
-
   })
 })

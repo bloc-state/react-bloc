@@ -1,9 +1,5 @@
 import { useState, Fragment, createContext, useEffect } from "react"
-import {
-  BlocModule,
-  BlocProviderProps,
-  BlocProviderState,
-} from "../../types"
+import { BlocModule, BlocProviderProps, BlocProviderState } from "../../types"
 import {
   addBlocContext,
   getBlocContext,
@@ -33,7 +29,6 @@ export function BlocProvider(
     setState(stateFromProps)
 
     if (props.onCreate) {
-
       props.onCreate(resolver)
     }
 
@@ -71,7 +66,7 @@ const getStateFromProps = ({
           `BlocProvider.getStateFromProps: ${name} already exists in current provider context`,
         )
 
-      return name 
+      return name
     })
     .sort()
     .join("-")

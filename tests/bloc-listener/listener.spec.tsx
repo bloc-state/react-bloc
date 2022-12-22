@@ -1,8 +1,6 @@
 import { cleanup, render, waitFor, screen } from "@testing-library/react"
-import {
-  UserSingleBlocListenerProvider,
-} from "../test-helpers"
-import {  clearBlocContext } from "../../src/context/context"
+import { UserSingleBlocListenerProvider } from "../test-helpers"
+import { clearBlocContext } from "../../src/context/context"
 import { AwilixContainer, createContainer } from "awilix"
 
 describe("BlocListener", () => {
