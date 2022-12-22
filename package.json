@@ -1,6 +1,6 @@
 {
   "name": "@bloc-state/react-bloc",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "React adapter for bloc-state.",
   "publishConfig": {
     "access": "public"
