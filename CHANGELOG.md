@@ -1,3 +1,21 @@
+# [4.0.0](https://github.com/bloc-state/react-bloc/compare/v3.1.0...v4.0.0) (2022-12-19)
+
+
+### Bug Fixes
+
+* **resolver:**  both BlocProvider and BlocListener use BlocResolver callback ([48d62f7](https://github.com/bloc-state/react-bloc/commit/48d62f781641b2893e17170cb02cf407125a7250))
+
+
+### Features
+
+* **useBlocSelector:** useBlocSelector no longer accepts suspend option ([f9b89fa](https://github.com/bloc-state/react-bloc/commit/f9b89fad550a8aa68b05e77ce9c050759eb24a3b))
+
+
+### BREAKING CHANGES
+
+* **useBlocSelector:** useBlocSelector no longer needs the suspend option,
+only the suspendWhen callback will trigger suspense
+
 # [3.1.0](https://github.com/bloc-state/react-bloc/compare/v3.0.0...v3.1.0) (2022-12-17)
 
 ### Bug Fixes
