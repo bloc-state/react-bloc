@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/bloc-state/react-bloc/compare/v4.0.0...v4.1.0) (2022-12-22)
+
+
+### Features
+
+* **useBlocSelector:** added errorWhen predicate option ([d632759](https://github.com/bloc-state/react-bloc/commit/d6327590ed4e89647945b7c9ba0cb64062737206))
+
 # [4.0.0](https://github.com/bloc-state/react-bloc/compare/v3.1.0...v4.0.0) (2022-12-19)
 
 
