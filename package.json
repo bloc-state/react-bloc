@@ -26,8 +26,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@bloc-state/bloc": "^2.0.2",
-    "@bloc-state/state": "^2.1.4",
+    "@bloc-state/bloc": "^2.1.0",
+    "@bloc-state/state": "^2.2.1",
     "@commitlint/cli": "^17.2.0",
     "@commitlint/config-conventional": "^17.2.0",
     "@egoist/prettier-config": "1.0.0",
@@ -58,8 +58,8 @@
     "*.{js,ts,css,md}": "prettier --write"
   },
   "peerDependencies": {
-    "@bloc-state/bloc": "^2.0.2",
-    "@bloc-state/state": "^2.1.4",
+    "@bloc-state/bloc": "^2.1.0",
+    "@bloc-state/state": "^2.2.1",
     "@types/react": "^18.0",
     "@types/react-dom": "^18.0",
     "awilix": "^8.0.0",
