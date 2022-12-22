@@ -5,10 +5,11 @@ import {
   renderHook,
   waitFor,
   act,
+  fireEvent,
 } from "@testing-library/react"
 import { clearBlocContext } from "../../src/context/context"
-import {  useBlocSelector } from "../../src"
-import {  UserBloc, UserBlocProvider } from "../test-helpers"
+import { useBlocSelector } from "../../src"
+import { UserBloc, UserBlocProvider } from "../test-helpers"
 import CounterCubit from "../test-helpers/counter/counter.cubit"
 import {
   blocUserWrapper as buw,
@@ -22,14 +23,17 @@ describe("useBlocSelector", () => {
   let cubitCounterWrapper: ({ children }: any) => JSX.Element
   let blocUserWrapper: ({ children }: any) => JSX.Element
   let container: AwilixContainer
+  const originalConsoleError = console.error
 
   beforeEach(() => {
+    console.error = () => {}
     cubitCounterWrapper = ccw
     blocUserWrapper = buw
     container = createContainer()
   })
 
   afterEach(() => {
+    console.error = originalConsoleError
     clearBlocContext()
     cleanup()
     container.dispose()
@@ -101,7 +105,7 @@ describe("useBlocSelector", () => {
 
       const bloc = container.resolve<CounterCubit>(CounterCubit.name)
 
-      act( () => {
+      act(() => {
         bloc.increment()
       })
 
@@ -127,6 +131,46 @@ describe("useBlocSelector", () => {
       )
 
       expect(screen.getByTestId("test-counter").textContent).toBe("1")
+    })
+  })
+
+  describe("errorWhen", () => {
+    it("should throw a render error when it returns true ", async () => {
+      expect.assertions(2)
+      render(CounterBlocProvider(container, undefined, (state) => state === 0))
+
+      await waitFor(
+        () => {
+          screen.getByRole("alert")
+        },
+        {
+          timeout: 3000,
+        },
+      )
+
+      expect(screen.getByTestId("test-count").textContent).toBe("0")
+
+      const testCountButton = screen.getByTestId("test-count-button")
+
+      act(() => {
+        fireEvent(
+          testCountButton,
+          new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true,
+          }),
+        )
+      })
+
+      await waitFor(
+        () => {
+          screen.getByTestId("test-counter")
+          expect(screen.getByTestId("test-counter").textContent).toBe("1")
+        },
+        {
+          timeout: 3000,
+        },
+      )
     })
   })
 })

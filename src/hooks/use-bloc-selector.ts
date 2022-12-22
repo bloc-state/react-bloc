@@ -7,7 +7,7 @@ import {
   useObservableSuspense,
 } from "observable-hooks"
 import { useMemo } from "react"
-import { filter, map, Observable } from "rxjs"
+import { filter, map, Observable, tap } from "rxjs"
 import { SelectorStateType, StateType, UseBlocSelectorConfig } from "../types"
 import { useBlocInstance } from "./use-bloc-instance"
 
@@ -22,29 +22,39 @@ export function useBlocSelector<P, B extends BlocBase<any>>(
 
   const listenWhenState$ = useObservable(() => {
     return providedBloc.state$.pipe(filter(listenWhen))
-  }, [])
+  })
 
-  const selectedState$ = isState
-    ? useObservable(() => {
-        return listenWhenState$.pipe(
-          map((state) => {
-            const _state = state as SelectorStateType<B>
-            return selector(_state.data)
-          }),
-        )
-      })
-    : useObservable(() => {
-        return listenWhenState$.pipe(
-          map((state) => {
-            const _state = state as SelectorStateType<B>
-            return selector(_state)
-          }),
-        )
-      }, [])
+  const errorWhenState$ = useObservable(() => {
+    return listenWhenState$.pipe(
+      tap((state) => {
+        if (config.errorWhen && config.errorWhen(state)) {
+          throw new BlocRenderError(state)
+        }
+      }),
+    )
+  })
 
   if (config.suspendWhen) {
-    return useBlocSuspense(listenWhenState$, config)
+    return useBlocSuspense(errorWhenState$, config)
   } else {
+    const selectedState$ = isState
+      ? useObservable(() => {
+          return errorWhenState$.pipe(
+            map((state) => {
+              const _state = state as SelectorStateType<B>
+              return selector(_state.data)
+            }),
+          )
+        })
+      : useObservable(() => {
+          return errorWhenState$.pipe(
+            map((state) => {
+              const _state = state as SelectorStateType<B>
+              return selector(_state)
+            }),
+          )
+        })
+
     return useObservableEagerState(selectedState$)
   }
 }
@@ -63,4 +73,12 @@ function useBlocSuspense<P, B extends BlocBase<any>>(
   const state = useObservableSuspense(resource) as StateType<B>
 
   return selector(isStateInstance(state) ? state.data : state)
+}
+
+export class BlocRenderError<State> extends Error {
+  constructor(public readonly state: State, reload?: () => void) {
+    super("useBlocSelector: errorWhen triggered a new render Error")
+
+    Object.setPrototypeOf(this, BlocRenderError.prototype)
+  }
 }
