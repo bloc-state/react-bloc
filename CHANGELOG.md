@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/bloc-state/react-bloc/compare/v4.1.0...v4.1.1) (2022-12-22)
+
+
+### Bug Fixes
+
+* **types:** bump @bloc-state/state @bloc-state/bloc to update types ([97b2faa](https://github.com/bloc-state/react-bloc/commit/97b2faaa5023ca96c3e5bd84a352c8067d011b8b))
+
 # [4.1.0](https://github.com/bloc-state/react-bloc/compare/v4.0.0...v4.1.0) (2022-12-22)
 
 
