@@ -22,6 +22,6 @@ describe("BlocModule", () => {
     registerModules([UserModule, CounterModule])
     const registrations = getRegistrations()
 
-    expect(registrations.UserApi).toBeDefined()
+    expect(registrations["UserApi"]).toBeDefined()
   })
 })
