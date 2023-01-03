@@ -1,22 +1,14 @@
 import { useState, Fragment, createContext, useEffect } from "react"
-import { BlocModule, BlocProviderProps, BlocProviderState } from "../../types"
+import { BlocProviderProps, BlocProviderState } from "../../types"
 import {
   addBlocContext,
   getBlocContext,
   hasBlocContext,
   removeBlocContext,
 } from "../../context/context"
-import { asClass, createContainer } from "awilix"
+import { asClass } from "awilix"
 import { resolver } from "../../context/resolver"
-
-// Don't export the root container directly
-const rootContainer = createContainer()
-
-export const getRegistrations = () => rootContainer.registrations
-
-export const registerModules = (modules: BlocModule[]) => {
-  modules.forEach((module) => module(rootContainer))
-}
+import { createChildContainer } from "../../container"
 
 export function BlocProvider(
   props: React.PropsWithChildren<BlocProviderProps>,
@@ -56,7 +48,7 @@ const getStateFromProps = ({
   bloc,
   scope,
 }: BlocProviderProps): BlocProviderState => {
-  const providerContainer = container ?? rootContainer.createScope()
+  const providerContainer = container ?? createChildContainer()
   const shouldDestroy = !container // only destroy if the container is created by the provider
   let names = bloc
     .map((blocClass) => {

@@ -2,7 +2,7 @@ import { BlocBase, ClassType } from "@bloc-state/bloc"
 import { useContext } from "react"
 import { getBlocContext } from "../context/context"
 
-export const useBlocInstance = <B extends BlocBase<any>>(
+export const useBlocInstance = <B extends BlocBase<unknown>>(
   bloc: ClassType<B>,
   scope?: string,
 ): B => {
