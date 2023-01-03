@@ -18,7 +18,7 @@ export function useBlocSelector<P, B extends BlocBase<any>>(
   const providedBloc = useBlocInstance(bloc, config.scope)
   const isState = isStateInstance(providedBloc.state)
   const selector = config.selector
-  const listenWhen = config.listenWhen ?? (() => true)
+  const listenWhen = config.listenWhen ?? useMemo(() => () => true, [])
 
   const listenWhenState$ = useObservable(() => {
     return providedBloc.state$.pipe(filter(listenWhen))

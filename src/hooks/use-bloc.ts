@@ -1,12 +1,12 @@
 import { BlocBase, ClassType } from "@bloc-state/bloc"
 import { useObservableEagerState } from "observable-hooks"
-import { StateType, UseBlocConfig, UseBlocSelectorConfig } from "../types"
+import { StateType, UseBlocSelectorConfig } from "../types"
 import { useBlocInstance } from "./use-bloc-instance"
 import { useBlocSelector } from "./use-bloc-selector"
 
 export function useBloc<B extends BlocBase<any>, P = StateType<B>>(
   bloc: ClassType<B>,
-  config?: UseBlocSelectorConfig<B, P> & UseBlocConfig,
+  config?: UseBlocSelectorConfig<B, P>,
 ): ReturnType<() => [P, B]> {
   const providedBloc = useBlocInstance(bloc, config?.scope)
   if (config?.selector) {
