@@ -1,3 +1,10 @@
+# [4.2.0-beta.2](https://github.com/bloc-state/react-bloc/compare/v4.2.0-beta.1...v4.2.0-beta.2) (2023-01-04)
+
+
+### Bug Fixes
+
+* **BlocProvider:** change BlocRegistration type to accept BlocModule ([3a9cb3b](https://github.com/bloc-state/react-bloc/commit/3a9cb3b346a48a2901adb32fd591c06c1c7d5eab))
+
 # [4.2.0-beta.1](https://github.com/bloc-state/react-bloc/compare/v4.1.1...v4.2.0-beta.1) (2023-01-04)
 
 
