@@ -1,6 +1,6 @@
 import { BlocBase, Bloc, Cubit, ClassType } from "@bloc-state/bloc"
 import { State } from "@bloc-state/state"
-import { AwilixContainer, NameAndRegistrationPair } from "awilix"
+import { AwilixContainer } from "awilix"
 import { BlocContext } from "./context/context"
 
 export type StateType<T extends BlocBase<any>> = T extends Cubit<infer U>
@@ -34,7 +34,7 @@ export type BlocClass = ClassType<BlocBase>
 
 export type BlocRegistration = {
   bloc: ClassType<BlocBase>
-  registration: NameAndRegistrationPair<any>
+  module: BlocModule
 }
 
 export type Registration = BlocClass | BlocRegistration

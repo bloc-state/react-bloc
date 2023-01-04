@@ -79,12 +79,14 @@ const getStateFromProps = ({
     addBlocContext(names, blocContext)
   }
 
-  for (let b of bloc) {
-    const blocClass = isRegistration(b) ? b.bloc : b
+  const blocs = bloc
+
+  for (let bloc of blocs) {
+    const blocClass = isRegistration(bloc) ? bloc.bloc : bloc
     const name = scope ? `${scope}-${blocClass.name}` : blocClass.name
     
-    if ( isRegistration( b ) ) {
-      providerContainer.register(b.registration)
+    if ( isRegistration( bloc ) ) {
+      bloc.module(providerContainer)
     }
 
     if ( !providerContainer.hasRegistration( name ) ) {
@@ -102,5 +104,5 @@ const getStateFromProps = ({
 }
 
 function isRegistration ( bloc: BlocClass | BlocRegistration ): bloc is BlocRegistration {
-  return (bloc as BlocRegistration).registration !== undefined
+  return (bloc as BlocRegistration).module !== undefined
 }
