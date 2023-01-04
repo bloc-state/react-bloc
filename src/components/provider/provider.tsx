@@ -1,5 +1,5 @@
 import { useState, Fragment, createContext, useEffect } from "react"
-import { BlocProviderProps, BlocProviderState } from "../../types"
+import { BlocClass, BlocProviderProps, BlocProviderState, BlocRegistration } from "../../types"
 import {
   addBlocContext,
   getBlocContext,
@@ -51,7 +51,8 @@ const getStateFromProps = ({
   const providerContainer = container ?? createChildContainer()
   const shouldDestroy = !container // only destroy if the container is created by the provider
   let names = bloc
-    .map((blocClass) => {
+    .map((registration) => {
+      const blocClass = isRegistration(registration) ? registration.bloc : registration
       const name = scope ? `${scope}-${blocClass.name}` : blocClass.name
       if (hasBlocContext(name))
         throw new Error(
@@ -79,15 +80,27 @@ const getStateFromProps = ({
   }
 
   for (let b of bloc) {
-    const name = scope ? `${scope}-${b.name}` : b.name
-    providerContainer.register({
-      [name]: asClass(b)
-        .disposer((_bloc) => _bloc.close())
-        .scoped(),
-    })
+    const blocClass = isRegistration(b) ? b.bloc : b
+    const name = scope ? `${scope}-${blocClass.name}` : blocClass.name
+    
+    if ( isRegistration( b ) ) {
+      providerContainer.register(b.registration)
+    }
+
+    if ( !providerContainer.hasRegistration( name ) ) {
+      providerContainer.register( {
+        [name]: asClass(blocClass)
+          .disposer((_bloc) => _bloc.close())
+          .scoped(),
+      })
+    }
 
     addBlocContext(name, blocContext)
   }
 
   return { blocContext, container: providerContainer, shouldDestroy }
+}
+
+function isRegistration ( bloc: BlocClass | BlocRegistration ): bloc is BlocRegistration {
+  return (bloc as BlocRegistration).registration !== undefined
 }

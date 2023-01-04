@@ -1,7 +1,6 @@
 import { BlocBase, Bloc, Cubit, ClassType } from "@bloc-state/bloc"
 import { State } from "@bloc-state/state"
-import { AwilixContainer } from "awilix"
-import { Observable } from "rxjs"
+import { AwilixContainer, NameAndRegistrationPair } from "awilix"
 import { BlocContext } from "./context/context"
 
 export type StateType<T extends BlocBase<any>> = T extends Cubit<infer U>
@@ -10,11 +9,9 @@ export type StateType<T extends BlocBase<any>> = T extends Cubit<infer U>
   ? D
   : never
 
-export type SuspenseDataType<T> = T extends State<infer U> ? U : T
+export type DataType<T> = T extends State<infer U> ? U : T
 
-export type SelectorStateType<B extends BlocBase<any>> = SuspenseDataType<
-  StateType<B>
->
+export type SelectorStateType<B extends BlocBase<any>> = DataType<StateType<B>>
 
 export type BlocModule = (container: AwilixContainer) => void
 
@@ -29,26 +26,21 @@ export type UseBlocSelectorConfig<B extends BlocBase<any>, P> = {
   errorWhen?: (state: StateType<B>) => boolean
 } & UseBlocConfig
 
-export type BlocType<T extends BlocBase<any>> = T extends Bloc<infer E, infer S>
-  ? Bloc<E, S>
-  : T extends Cubit<infer S>
-  ? Cubit<S>
-  : never
-
-export type StreamType<T extends Observable<any>> = T extends Observable<
-  infer U
->
-  ? U
-  : never
-
-export type ProvidedBlocType = BlocBase<any> | BlocBase<any>[]
-
 export type OnCreate = (
   get: <B extends BlocBase<any>>(blocClass: ClassType<B>, scope?: string) => B,
 ) => void
 
+export type BlocClass = ClassType<BlocBase>
+
+export type BlocRegistration = {
+  bloc: ClassType<BlocBase>
+  registration: NameAndRegistrationPair<any>
+}
+
+export type Registration = BlocClass | BlocRegistration
+
 export type BlocProviderProps = {
-  bloc: [ClassType<BlocBase>, ...ClassType<BlocBase>[]]
+  bloc: [Registration, ...Registration[]]
   deps?: React.DependencyList
   scope?: string
   onCreate?: OnCreate
