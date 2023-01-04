@@ -1,3 +1,10 @@
+# [4.2.0-beta.1](https://github.com/bloc-state/react-bloc/compare/v4.1.1...v4.2.0-beta.1) (2023-01-04)
+
+
+### Features
+
+* **BlocProvider:** added container registration at the provider level ([ba64139](https://github.com/bloc-state/react-bloc/commit/ba641398b4570b68f1cc0219ca0823791da9e502))
+
 ## [4.1.1](https://github.com/bloc-state/react-bloc/compare/v4.1.0...v4.1.1) (2022-12-22)
 
 
