@@ -1,3 +1,10 @@
+# [4.2.0-beta.4](https://github.com/bloc-state/react-bloc/compare/v4.2.0-beta.3...v4.2.0-beta.4) (2023-01-05)
+
+
+### Bug Fixes
+
+* **Container:** export rootContainer ([9549013](https://github.com/bloc-state/react-bloc/commit/95490135a24ff3ad593f898a0214bb50ebf4edc2))
+
 # [4.2.0-beta.3](https://github.com/bloc-state/react-bloc/compare/v4.2.0-beta.2...v4.2.0-beta.3) (2023-01-05)
 
 
