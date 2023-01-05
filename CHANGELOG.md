@@ -1,3 +1,10 @@
+# [4.2.0-beta.3](https://github.com/bloc-state/react-bloc/compare/v4.2.0-beta.2...v4.2.0-beta.3) (2023-01-05)
+
+
+### Bug Fixes
+
+* **BlocProvider:** register modules to rootContainer ([e6becd1](https://github.com/bloc-state/react-bloc/commit/e6becd18117d045384873fc9f4a437ce146402b3))
+
 # [4.2.0-beta.2](https://github.com/bloc-state/react-bloc/compare/v4.2.0-beta.1...v4.2.0-beta.2) (2023-01-04)
 
 
