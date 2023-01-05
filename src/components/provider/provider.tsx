@@ -8,7 +8,7 @@ import {
 } from "../../context/context"
 import { asClass } from "awilix"
 import { resolver } from "../../context/resolver"
-import { createChildContainer } from "../../container"
+import { rootContainer } from "../../container"
 
 export function BlocProvider(
   props: React.PropsWithChildren<BlocProviderProps>,
@@ -48,7 +48,7 @@ const getStateFromProps = ({
   bloc,
   scope,
 }: BlocProviderProps): BlocProviderState => {
-  const providerContainer = container ?? createChildContainer()
+  const providerContainer = container ?? rootContainer.createScope()
   const shouldDestroy = !container // only destroy if the container is created by the provider
   let names = bloc
     .map((registration) => {
@@ -86,7 +86,7 @@ const getStateFromProps = ({
     const name = scope ? `${scope}-${blocClass.name}` : blocClass.name
     
     if ( isRegistration( bloc ) ) {
-      bloc.module(providerContainer)
+      bloc.module(rootContainer)
     }
 
     if ( !providerContainer.hasRegistration( name ) ) {

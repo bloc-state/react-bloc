@@ -2,7 +2,7 @@ import { BlocModule } from "../types"
 
 import { createContainer } from "awilix"
 
-const rootContainer = createContainer()
+export const rootContainer = createContainer()
 
 export const createChildContainer = () => rootContainer.createScope()
 
