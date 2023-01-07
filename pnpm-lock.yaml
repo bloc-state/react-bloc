@@ -20,7 +20,7 @@ specifiers:
   jest-environment-jsdom: ^29.3.1
   lint-staged: ^12.5.0
   observable-hooks: ^4.2.1
-  prettier: 2.5.1
+  prettier: 2.8.2
   react: ^18.2.0
   react-dom: ^18.2.0
   react-error-boundary: ^3.1.4
@@ -52,7 +52,7 @@ devDependencies:
   jest: 29.3.1
   jest-environment-jsdom: 29.3.1
   lint-staged: 12.5.0
-  prettier: 2.5.1
+  prettier: 2.8.2
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-error-boundary: 3.1.4_react@18.2.0
@@ -4801,8 +4801,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier/2.5.1:
-    resolution: {integrity: sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==}
+  /prettier/2.8.2:
+    resolution: {integrity: sha512-BtRV9BcncDyI2tsuS19zzhzoxD8Dh8LiCx7j7tHzrkz8GFXAexeWFdi22mjE1d16dftH2qNaytVxqiRTGlMfpw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
